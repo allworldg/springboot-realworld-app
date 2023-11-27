@@ -1,7 +1,7 @@
-package allworldg.api.exception;
+package realworld.api.exception;
 
 
-import allworldg.common.*;
+import realworld.common.*;
 
 public class UnAuthorizedException extends RuntimeException {
     public UnAuthorizedException() {

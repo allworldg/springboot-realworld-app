@@ -1,6 +1,6 @@
-package allworldg.api.exception;
+package realworld.api.exception;
 
-import static allworldg.common.HttpCommon.NOT_FOUND;
+import static realworld.common.HttpCommon.NOT_FOUND;
 
 public class ResourceNotFoundException extends RuntimeException {
     public ResourceNotFoundException(){

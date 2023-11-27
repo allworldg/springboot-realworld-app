@@ -1,4 +1,4 @@
-package allworldg.common;
+package realworld.common;
 
 public class HttpCommon {
     public static int CODE_OK = 200;

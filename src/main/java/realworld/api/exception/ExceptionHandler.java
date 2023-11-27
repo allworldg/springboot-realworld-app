@@ -1,4 +1,4 @@
-package allworldg.api.exception;
+package realworld.api.exception;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
