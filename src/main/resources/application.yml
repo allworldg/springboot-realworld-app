@@ -24,6 +24,6 @@ spring:
         url-pattern: /druid/*
       # FilterStat
       driver-class-name: com.mysql.cj.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/realworld?useSSL=false&autoReconnect=true&characterEncoding=utf8
+      url: jdbc:mysql://localhost:3306/realworld?useSSL=false&autoReconnect=true&characterEncoding=utf8&allowPublicKeyRetrieval=true
   config:
     import: optional:file:.env[.properties]

@@ -10,8 +10,8 @@ import java.util.Optional;
 
 @Repository
 public class MybatisUserRepository implements UserRepository {
-    @Autowired
-    private UserMapper userMapper;
+//    @Autowired
+//    private UserMapper userMapper;
 
     @Override
     public Optional<User> findUserByUserId(long id) {

@@ -1,5 +1,6 @@
 package realworld;
 
+import realworld.api.exception.ResourceNotFoundException;
 import realworld.infrastructure.mybatis.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,6 @@ class DemoApplicationTests {
 
     @Test
     void contextLoads() {
-        System.out.println(userMapper.selectById(1).getUsername());
+        throw new ResourceNotFoundException();
     }
 }
