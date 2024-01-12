@@ -1,6 +1,8 @@
 package realworld;
 
+import org.springframework.beans.factory.annotation.Value;
 import realworld.api.exception.ResourceNotFoundException;
+import realworld.core.user.User;
 import realworld.infrastructure.mybatis.UserMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +15,11 @@ class DemoApplicationTests {
     @Autowired
     UserMapper userMapper;
 
+    @Value("${server.port}")
+    private String image;
+
     @Test
     void contextLoads() {
-        throw new ResourceNotFoundException();
+        System.out.println(image);
     }
 }

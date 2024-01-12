@@ -1,5 +1,8 @@
 server:
   port: 8080
+  servlet:
+    session:
+      timeout: 100m
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -27,3 +30,17 @@ spring:
       url: jdbc:mysql://localhost:3306/realworld?useSSL=false&autoReconnect=true&characterEncoding=utf8&allowPublicKeyRetrieval=true
   config:
     import: optional:file:.env[.properties]
+  data:
+    redis:
+      host: localhost
+      username:
+      password:
+      port: 6379
+      database: 1
+
+session:
+  store-type: redis
+
+
+
+image_url: https://static.productionready.io/images/smiley-cyrus.jpg

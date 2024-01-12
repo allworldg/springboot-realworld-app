@@ -1,11 +1,12 @@
 package realworld.core.user;
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 @TableName("user")
 public class User {
-    @TableId
+    @TableId(value = "id",type = IdType.AUTO)
     private Long id;
     private String email;
     private String username;
@@ -63,6 +64,14 @@ public class User {
 
     public User(Long id, String email, String username, String password, String bio, String image) {
         this.id = id;
+        this.email = email;
+        this.username = username;
+        this.password = password;
+        this.bio = bio;
+        this.image = image;
+    }
+
+    public User(String email, String username, String password, String bio, String image) {
         this.email = email;
         this.username = username;
         this.password = password;
