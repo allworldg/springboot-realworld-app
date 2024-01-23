@@ -30,7 +30,7 @@ public class WebSecurityConfig {
                    .formLogin(form -> {
                        form.disable();
                    })
-//                   .cors(Customizer.withDefaults())
+                   .cors(Customizer.withDefaults())
                    .requestCache(cache -> cache.disable())
                    .sessionManagement(manage -> manage.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                    .authorizeHttpRequests(request -> request

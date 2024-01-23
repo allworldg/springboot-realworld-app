@@ -7,10 +7,10 @@ import org.hibernate.validator.constraints.Length;
 
 @JsonRootName("user")
 public class LoginParam {
-    @NotBlank(message = "email can't be blank")
-    @Email(message = "should be an email")
+    @NotBlank(message = "can't be blank")
+    @Email(message = "need to be formatted correctly")
     private String email;
-    @NotBlank(message = "password can't be blank")
+    @NotBlank(message = "can't be blank")
     @Length(max = 26, message = "maximum length is 26")
     private String password;
 

@@ -2,14 +2,14 @@ package realworld.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import realworld.common.HttpCommon;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -22,11 +22,14 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleArgumentNotValid(MethodArgumentNotValidException e) {
-        e.getAllErrors().forEach(error -> {
-            System.out.println("key: " + error.getObjectName());
-            System.out.println("value: " + error.getDefaultMessage());
+        CustomErrors customErrors = new CustomErrors();
+        Map<String, List<String>> errors = customErrors.getErrors();
+        e.getFieldErrors().forEach(error -> {
+            List<String> list = errors.getOrDefault(error.getField(), new ArrayList<>());
+            list.add(error.getDefaultMessage());
+            errors.put(error.getField(), list);
         });
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getBindingResult().getAllErrors());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(customErrors);
     }
 
 
