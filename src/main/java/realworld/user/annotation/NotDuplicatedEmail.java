@@ -1,4 +1,4 @@
-package realworld.application.user;
+package realworld.user.annotation;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

@@ -16,7 +16,6 @@
     <properties>
         <java.version>17</java.version>
         <spring-security.version>6.2.0</spring-security.version>
-        <spring-session.version>3.2.1</spring-session.version>
     </properties>
     <dependencies>
         <dependency>
@@ -71,17 +70,19 @@
         </dependency>
 
 
-        <dependency>
-            <groupId>org.springframework.session</groupId>
-            <artifactId>spring-session-data-redis</artifactId>
-            <version>3.2.1</version>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.12.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

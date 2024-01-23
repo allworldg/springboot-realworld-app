@@ -1,4 +1,4 @@
-package realworld.api.exception;
+package realworld.exception;
 
 
 import realworld.common.*;

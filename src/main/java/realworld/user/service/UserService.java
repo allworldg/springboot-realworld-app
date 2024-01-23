@@ -1,19 +1,16 @@
-package realworld.application.user;
+package realworld.user.service;
 
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import realworld.api.exception.UnAuthorizedException;
-import realworld.core.user.User;
-import realworld.core.user.UserRepository;
-import realworld.infrastructure.mybatis.UserMapper;
-
-import java.util.Optional;
-import java.util.function.Supplier;
+import realworld.exception.InvalidEmailOrPasswordException;
+import realworld.exception.UnAuthorizedException;
+import realworld.user.UserRegister;
+import realworld.user.User;
+import realworld.user.repository.UserRepository;
 
 @Service
-public class UserService  {
+public class UserService {
     private UserRepository userRepository;
 
     @Value("${image_url}")
@@ -36,6 +33,11 @@ public class UserService  {
     public User findUserByUserId(Long id) throws Exception {
         return userRepository.findUserByUserId(id)
                              .orElseThrow(() -> new UnAuthorizedException());
+    }
+
+    public User findUserByEmail(String email) {
+        return userRepository.findUserByEmail(email)
+                             .orElseThrow(() -> new InvalidEmailOrPasswordException());
     }
 
 //    public UserWithToken getUserWithTokenById()

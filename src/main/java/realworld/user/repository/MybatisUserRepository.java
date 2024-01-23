@@ -1,13 +1,13 @@
-package realworld.infrastructure.repository;
+package realworld.user.repository;
 
-import org.springframework.transaction.annotation.Transactional;
-import realworld.core.user.User;
-import realworld.core.user.UserRepository;
-import realworld.infrastructure.mybatis.UserMapper;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import realworld.user.User;
+import realworld.user.repository.UserRepository;
+import realworld.user.repository.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.rmi.server.ExportException;
 import java.util.Optional;
 
 @Repository
@@ -29,6 +29,14 @@ public class MybatisUserRepository implements UserRepository {
     @Override
     public void addFollowRelation(long userId, long followUserId) {
 
+    }
+
+    @Override
+    public Optional<User> findUserByEmail(String email) {
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("email", email);
+        User user = userMapper.selectOne(wrapper);
+        return Optional.ofNullable(user);
     }
 
     @Override

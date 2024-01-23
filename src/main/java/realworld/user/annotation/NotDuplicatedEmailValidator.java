@@ -1,10 +1,20 @@
-package realworld.application.user;
+package realworld.user.annotation;
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import org.springframework.boot.sql.init.dependency.DependsOnDatabaseInitialization;
+import org.apache.logging.log4j.util.Strings;
+import realworld.user.User;
+import realworld.user.repository.UserRepository;
+
+import java.util.Optional;
 
 public class NotDuplicatedEmailValidator implements ConstraintValidator<NotDuplicatedEmail, String> {
+    private UserRepository userRepository;
+
+    public NotDuplicatedEmailValidator(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
     @Override
     public void initialize(NotDuplicatedEmail constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
@@ -12,7 +22,7 @@ public class NotDuplicatedEmailValidator implements ConstraintValidator<NotDupli
 
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
-//        todo: when finish repository.findUser, then finish this;
-        return true;
+        Optional<User> userOptional = userRepository.findUserByEmail(s);
+        return userOptional.isEmpty();
     }
 }

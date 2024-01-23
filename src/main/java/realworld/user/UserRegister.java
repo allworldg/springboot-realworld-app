@@ -1,8 +1,9 @@
-package realworld.application.user;
+package realworld.user;
 
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import realworld.user.annotation.NotDuplicatedEmail;
 
 public class UserRegister {
     @Email(message = "should be an email")

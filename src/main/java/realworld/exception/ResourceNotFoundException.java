@@ -1,4 +1,4 @@
-package realworld.api.exception;
+package realworld.exception;
 
 import static realworld.common.HttpCommon.NOT_FOUND;
 
