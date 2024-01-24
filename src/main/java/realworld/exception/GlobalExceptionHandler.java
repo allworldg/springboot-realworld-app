@@ -29,14 +29,19 @@ public class GlobalExceptionHandler {
             list.add(error.getDefaultMessage());
             errors.put(error.getField(), list);
         });
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(customErrors);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(customErrors);
     }
 
 
-//    @ExceptionHandler(InvalidEmailOrPasswordException.class)
-//    public ResponseEntity<Object> handleInvalidEmailOrPassword(InvalidEmailOrPasswordException e) {
-//        return ResponseEntity.status(HttpStatus.FORBIDDEN).body()
-//    }
+    @ExceptionHandler(InvalidEmailOrPasswordException.class)
+    public ResponseEntity<Object> handleInvalidEmailOrPassword(InvalidEmailOrPasswordException e) {
+        CustomErrors customErrors = new CustomErrors();
+        Map<String, List<String>> errors = customErrors.getErrors();
+        ArrayList<String> list = new ArrayList<>();
+        list.add(HttpCommon.IS_INVALID);
+        errors.put(HttpCommon.EMAIL_PASSWORD_INVALID, list);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(customErrors);
+    }
 
     @ExceptionHandler(UnAuthorizedException.class)
     public ResponseEntity<Object> handleUnAuthorize(UnAuthorizedException e) {
