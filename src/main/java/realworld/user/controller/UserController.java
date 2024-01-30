@@ -33,15 +33,16 @@ public class UserController {
     @PostMapping("/login")
     public LoginUser login(@Valid @RequestBody LoginParam loginParam) {
         UsernamePasswordAuthenticationToken token =
-                new UsernamePasswordAuthenticationToken(loginParam.getEmail(), loginParam.getPassword());
-        manager.authenticate(token);
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+                new UsernamePasswordAuthenticationToken(loginParam.getEmail(),
+                        loginParam.getPassword());
+        Authentication authenticate = manager.authenticate(token);
+        LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
         return loginUser;
     }
 
     @PostMapping("/register")
-    public ResponseEntity<LoginUser> register(@Valid @RequestBody UserRegister userRegister) throws Exception {
+    public ResponseEntity<LoginUser> register(@Valid @RequestBody UserRegister userRegister)
+            throws Exception {
         User user = userService.addUser(userRegister);
         user = userService.findUserByUserId(user.getId());
         LoginUser loginUser = new LoginUser(user.getEmail(), "", user.getUsername(),

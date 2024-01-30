@@ -39,8 +39,11 @@ public class WebSecurityConfig {
                    .requestCache(cache -> cache.disable())
                    .sessionManagement(manage -> manage.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                    .authorizeHttpRequests(request -> request
-                           .requestMatchers("/**")
+                           .requestMatchers("/users/login","/users/register")
                            .permitAll()
+                           .anyRequest()
+                           .authenticated()
+
                    )
                    .build();
     }

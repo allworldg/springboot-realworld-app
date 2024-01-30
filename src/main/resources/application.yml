@@ -36,6 +36,7 @@ spring:
       password:
       port: 6379
       database: 1
+      expire-time:
   mvc:
     #spring-devtools will log all exception even the exception is resolved,so close it.
     log-resolved-exception: false
@@ -45,3 +46,4 @@ spring:
 #      unwrap-root-value: true
 
 image_url: https://static.productionready.io/images/smiley-cyrus.jpg
+secret_key: ${SECRET_KEY}
