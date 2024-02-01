@@ -11,7 +11,9 @@ import realworld.user.repository.UserRepository;
 
 @Service
 public class UserService {
+
     private UserRepository userRepository;
+
 
     @Value("${image_url}")
     private String image;
@@ -30,7 +32,7 @@ public class UserService {
         return user;
     }
 
-    public User findUserByUserId(Long id) throws Exception {
+    public User findUserByUserId(Long id) {
         return userRepository.findUserByUserId(id)
                              .orElseThrow(() -> new UnAuthorizedException());
     }
@@ -40,6 +42,5 @@ public class UserService {
                              .orElseThrow(() -> new InvalidEmailOrPasswordException());
     }
 
-//    public UserWithToken getUserWithTokenById()
 
 }

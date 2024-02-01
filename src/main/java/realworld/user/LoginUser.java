@@ -24,13 +24,22 @@ public class LoginUser implements UserDetails {
     }
 
 
-    public LoginUser(String email, String password, String username, String token, String bio, String image) {
+    public LoginUser(String email, String password, String username, String token, String bio,
+                     String image) {
         this.email = email;
         this.password = password;
         this.token = token;
         this.username = username;
         this.bio = bio;
         this.image = image;
+    }
+
+    public LoginUser(User user) {
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.username = user.getUsername();
+        this.bio = user.getBio();
+        this.image = user.getImage();
     }
 
     public String getEmail() {

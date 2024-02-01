@@ -16,8 +16,12 @@ public class TokenService {
     @Value("${secret_key}")
     private String key;
 
+    @Value("${expire_time}")
+    private long expireTime;
+
 
     private StringRedisTemplate redisTemplate;
+
 
     public TokenService(StringRedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
@@ -30,7 +34,8 @@ public class TokenService {
                            .subject(userId.toString())
                            .signWith(secretKey)
                            .compact();
-        redisTemplate.opsForValue().set(token, Long.toString(userId), 3600L, TimeUnit.MINUTES);
+        redisTemplate.opsForValue()
+                     .set(token, Long.toString(userId), expireTime, TimeUnit.MINUTES);
         return token;
     }
 
@@ -40,6 +45,13 @@ public class TokenService {
             return null;
         }
         return Long.valueOf(id);
+    }
+
+    public void updateExpiredTime(String token) {
+        Long expire = redisTemplate.getExpire(token);
+        if (expire > 0 && expire < TimeUnit.HOURS.toSeconds(24)) {
+            redisTemplate.expire(token, expireTime, TimeUnit.MINUTES);
+        }
     }
 
     public void deleteToken(String token) {
