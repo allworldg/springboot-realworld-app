@@ -1,10 +1,13 @@
 package realworld.user.service;
 
+import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import realworld.common.HttpCommon;
 import realworld.exception.InvalidEmailOrPasswordException;
 import realworld.user.LoginUser;
 import realworld.user.User;
@@ -25,7 +28,7 @@ public class LoginUserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email)
             throws InvalidEmailOrPasswordException {
         User user = userRepository.findUserByEmail(email).orElseThrow(
-                () -> new InvalidEmailOrPasswordException());
+                () -> new UsernameNotFoundException(HttpCommon.IS_INVALID));
         UserDetails userDetails = createUserDetails(user);
         return userDetails;
     }

@@ -44,15 +44,15 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler({InvalidEmailOrPasswordException.class})
-    public ResponseEntity<Object> handleInvalidEmailOrPassword(InvalidEmailOrPasswordException e) {
-        CustomErrors customErrors = new CustomErrors();
-        Map<String, List<String>> errors = customErrors.getErrors();
-        ArrayList<String> list = new ArrayList<>();
-        list.add(HttpCommon.IS_INVALID);
-        errors.put(HttpCommon.EMAIL_PASSWORD_INVALID, list);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(customErrors);
-    }
+//    @ExceptionHandler({InvalidEmailOrPasswordException.class})
+//    public ResponseEntity<Object> handleInvalidEmailOrPassword(InvalidEmailOrPasswordException e) {
+//        CustomErrors customErrors = new CustomErrors();
+//        Map<String, List<String>> errors = customErrors.getErrors();
+//        ArrayList<String> list = new ArrayList<>();
+//        list.add(HttpCommon.IS_INVALID);
+//        errors.put(HttpCommon.EMAIL_PASSWORD_INVALID, list);
+//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(customErrors);
+//    }
 
     @ExceptionHandler(UnAuthorizedException.class)
     public ResponseEntity<Object> handleUnAuthorize(UnAuthorizedException e) {
