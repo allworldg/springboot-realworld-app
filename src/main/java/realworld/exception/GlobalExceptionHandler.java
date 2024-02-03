@@ -2,6 +2,7 @@ package realworld.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -32,15 +33,25 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(customErrors);
     }
 
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<Object> handleAuthenticationException(AuthenticationException e) {
+        CustomErrors customErrors = new CustomErrors();
+        Map<String, List<String>> map = customErrors.getErrors();
+        ArrayList<String> list = new ArrayList<>();
+        list.add(HttpCommon.IS_INVALID);
+        map.put(HttpCommon.EMAIL_PASSWORD_INVALID, list);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(customErrors);
+    }
 
-    @ExceptionHandler(InvalidEmailOrPasswordException.class)
+
+    @ExceptionHandler({InvalidEmailOrPasswordException.class})
     public ResponseEntity<Object> handleInvalidEmailOrPassword(InvalidEmailOrPasswordException e) {
         CustomErrors customErrors = new CustomErrors();
         Map<String, List<String>> errors = customErrors.getErrors();
         ArrayList<String> list = new ArrayList<>();
         list.add(HttpCommon.IS_INVALID);
         errors.put(HttpCommon.EMAIL_PASSWORD_INVALID, list);
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(customErrors);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(customErrors);
     }
 
     @ExceptionHandler(UnAuthorizedException.class)

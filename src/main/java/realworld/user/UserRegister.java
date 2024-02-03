@@ -1,17 +1,19 @@
 package realworld.user;
 
 
+import com.fasterxml.jackson.annotation.JsonRootName;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import realworld.user.annotation.NotDuplicatedEmail;
 
+@JsonRootName("user")
 public class UserRegister {
     @Email(message = "should be an email")
     @NotBlank(message = "can not be empty")
     @NotDuplicatedEmail()
     private String email;
 
-    @NotBlank(message = "username cannot be empty")
+    @NotBlank(message = "cannot be empty")
     private String username;
     @NotBlank(message = "password cannot be empty")
     private String password;
@@ -20,6 +22,10 @@ public class UserRegister {
         this.email = email;
         this.username = username;
         this.password = image;
+    }
+
+    public UserRegister() {
+
     }
 
 
@@ -36,7 +42,7 @@ public class UserRegister {
     }
 
     public void setUsername(String username) {
-        this.username =  username;
+        this.username = username;
     }
 
     public String getPassword() {

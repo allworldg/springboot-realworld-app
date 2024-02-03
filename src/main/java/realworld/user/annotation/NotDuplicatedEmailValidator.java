@@ -23,6 +23,6 @@ public class NotDuplicatedEmailValidator implements ConstraintValidator<NotDupli
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
         Optional<User> userOptional = userRepository.findUserByEmail(s);
-        return userOptional.isEmpty();
+        return userOptional.isPresent();
     }
 }

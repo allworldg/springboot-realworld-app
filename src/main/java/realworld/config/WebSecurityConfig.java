@@ -14,9 +14,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import realworld.filters.TokenFilter;
 import realworld.user.service.LoginUserService;
 
 import java.util.ArrayList;
@@ -37,9 +39,11 @@ public class WebSecurityConfig {
                    })
                    .cors(Customizer.withDefaults())
                    .requestCache(cache -> cache.disable())
-                   .sessionManagement(manage -> manage.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                   .sessionManagement(
+                           manage -> manage.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                   .addFilterBefore(new TokenFilter(), UsernamePasswordAuthenticationFilter.class)
                    .authorizeHttpRequests(request -> request
-                           .requestMatchers("/users/login","/users/register")
+                           .requestMatchers("/users/login", "/users")
                            .permitAll()
                            .anyRequest()
                            .authenticated()

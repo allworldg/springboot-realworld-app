@@ -17,6 +17,7 @@ import realworld.user.UserRegister;
 import realworld.user.service.UserService;
 import realworld.user.LoginUser;
 import realworld.user.User;
+import realworld.utils.TokenService;
 
 @RestController
 @RequestMapping("/users")
@@ -25,9 +26,13 @@ public class UserController {
 
     private AuthenticationManager manager;
 
-    public UserController(UserService userService, AuthenticationManager manager) {
+    private TokenService tokenService;
+
+    public UserController(UserService userService, AuthenticationManager manager,
+                          TokenService tokenService) {
         this.userService = userService;
         this.manager = manager;
+        this.tokenService = tokenService;
     }
 
     @PostMapping("/login")
@@ -35,19 +40,20 @@ public class UserController {
         UsernamePasswordAuthenticationToken token =
                 new UsernamePasswordAuthenticationToken(loginParam.getEmail(),
                         loginParam.getPassword());
+
         Authentication authenticate = manager.authenticate(token);
         LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
         return loginUser;
     }
 
-    @PostMapping("/register")
+    @PostMapping
     public ResponseEntity<LoginUser> register(@Valid @RequestBody UserRegister userRegister)
             throws Exception {
         User user = userService.addUser(userRegister);
         user = userService.findUserByUserId(user.getId());
         LoginUser loginUser = new LoginUser(user.getEmail(), "", user.getUsername(),
-                "", user.getBio(), user.getImage());
+                tokenService.createTokenByUserId(user.getId())
+                , user.getBio(), user.getImage());
         return ResponseEntity.status(HttpStatus.CREATED).body(loginUser);
     }
 }
-
