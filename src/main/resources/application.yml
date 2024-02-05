@@ -13,13 +13,15 @@ spring:
       max-active: 20
       max-wait: 60000
       min-evictable-idle-time-millis: 300000
+      max-evictable-idle-time-millis: 900000
       time-between-eviction-runs-millis: 60000
       validation-query: SELECT 1
+      keep-alive: true
       test-on-borrow: true
       test-on-return: true
       test-while-idle: true
       stat-view-servlet:
-        enabled: true
+        enabled: false
         allow:
         login-username: admin
         login-password: admin

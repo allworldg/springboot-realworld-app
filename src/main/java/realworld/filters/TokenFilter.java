@@ -41,8 +41,11 @@ public class TokenFilter extends OncePerRequestFilter {
                     return userService.findUserByUserId(userId);
                 })
                 .ifPresent(user -> {
+                    LoginUser loginUser = new LoginUser(user);
+                    loginUser.setToken(authorization);
                     SecurityContextHolder.getContext().setAuthentication(
-                            new UsernamePasswordAuthenticationToken(user, null, new ArrayList<>()));
+                            new UsernamePasswordAuthenticationToken(loginUser, null,
+                                    new ArrayList<>()));
                 });
         filterChain.doFilter(request, response);
     }
