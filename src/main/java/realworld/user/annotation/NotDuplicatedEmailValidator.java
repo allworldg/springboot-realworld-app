@@ -8,7 +8,8 @@ import realworld.user.repository.UserRepository;
 
 import java.util.Optional;
 
-public class NotDuplicatedEmailValidator implements ConstraintValidator<NotDuplicatedEmail, String> {
+public class NotDuplicatedEmailValidator
+        implements ConstraintValidator<NotDuplicatedEmail, String> {
     private UserRepository userRepository;
 
     public NotDuplicatedEmailValidator(UserRepository userRepository) {
@@ -23,6 +24,6 @@ public class NotDuplicatedEmailValidator implements ConstraintValidator<NotDupli
     @Override
     public boolean isValid(String s, ConstraintValidatorContext constraintValidatorContext) {
         Optional<User> userOptional = userRepository.findUserByEmail(s);
-        return userOptional.isPresent();
+        return userOptional.isEmpty();
     }
 }

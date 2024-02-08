@@ -1,12 +1,14 @@
 package realworld.user;
 
 
-import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import realworld.user.annotation.NotDuplicatedEmail;
 
-@JsonRootName("user")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
+@JsonTypeName("user")
 public class UserRegister {
     @Email(message = "should be an email")
     @NotBlank(message = "can not be empty")

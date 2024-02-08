@@ -46,7 +46,7 @@ public class UserController {
         return loginUser;
     }
 
-    @PostMapping
+    @PostMapping("/test")
     public ResponseEntity<LoginUser> register(@Valid @RequestBody UserRegister userRegister)
             throws Exception {
         User user = userService.addUser(userRegister);

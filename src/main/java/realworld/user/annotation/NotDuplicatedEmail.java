@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface NotDuplicatedEmail {
-    String message() default "Email is duplicated";
+    String message() default "is duplicated";
 
     Class<?>[] groups() default {};
 

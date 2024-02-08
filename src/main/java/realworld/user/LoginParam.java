@@ -1,11 +1,16 @@
 package realworld.user;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 
-@JsonRootName("user")
+//@JsonRootName("user")
+
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
+@JsonTypeName("user")
 public class LoginParam {
     @NotBlank(message = "can't be blank")
     @Email(message = "need to be formatted correctly")

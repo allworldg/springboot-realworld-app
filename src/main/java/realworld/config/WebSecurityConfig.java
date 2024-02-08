@@ -43,7 +43,7 @@ public class WebSecurityConfig {
                            manage -> manage.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                    .addFilterBefore(new TokenFilter(), UsernamePasswordAuthenticationFilter.class)
                    .authorizeHttpRequests(request -> request
-                           .requestMatchers("/users/login", "/users")
+                           .requestMatchers("/users/login", "/users/test", "/articles", "/tags")
                            .permitAll()
                            .anyRequest()
                            .authenticated()
