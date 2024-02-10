@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 
-@Component
+@SuppressWarnings("SpringJavaAutowiringInspection")
 public class TokenFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -30,6 +30,7 @@ public class TokenFilter extends OncePerRequestFilter {
 
     @Autowired
     private TokenService tokenService;
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,

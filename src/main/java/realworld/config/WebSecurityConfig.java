@@ -21,7 +21,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import realworld.filters.TokenFilter;
 import realworld.user.service.LoginUserService;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 @EnableMethodSecurity
@@ -41,9 +40,9 @@ public class WebSecurityConfig {
                    .requestCache(cache -> cache.disable())
                    .sessionManagement(
                            manage -> manage.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                   .addFilterBefore(new TokenFilter(), UsernamePasswordAuthenticationFilter.class)
+                   .addFilterBefore(tokenFilter(), UsernamePasswordAuthenticationFilter.class)
                    .authorizeHttpRequests(request -> request
-                           .requestMatchers("/users/login", "/users/test", "/articles", "/tags")
+                           .requestMatchers("/users/login", "/users", "/articles", "/tags")
                            .permitAll()
                            .anyRequest()
                            .authenticated()
@@ -60,12 +59,15 @@ public class WebSecurityConfig {
         return new ProviderManager(provider);
     }
 
+    @Bean
+    public TokenFilter tokenFilter() {
+        return new TokenFilter();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();
     }
-
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
