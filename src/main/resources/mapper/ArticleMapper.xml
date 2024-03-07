@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="realworld.article.repository.ArticleMapper">
+    <resultMap id="ArticleDto" type="realworld.article.ArticleDTO">
+        <result property="slug" column="slug"/>
+        <result property="body" column="body"/>
+        <result property="description" column="description"/>
+        <result property="title" column="title"/>
+        <result property="createdAt" column="created_at"/>
+        <association property="author" column="{userId=user_id,loginId=loginId}"
+                     select="getAuthor"/>
+        <collection property="tagList" column="{articleId=id}" javaType="arraylist"
+                    ofType="string" select="getTagList"/>
+    </resultMap>
+    <select id="getArticleDtoList" resultMap="ArticleDto">
+        select a.slug,
+        u.username,
+        a.body,
+        a.description,
+        a.title,
+        a.created_at,
+        a.user_id,
+        a.id,
+        #{loginId} as loginId
+        from article as a
+        inner join user as u
+        on a.user_id = u.id
+        where a.id in
+        <foreach collection="ids" open="(" index="index" separator="," item="articleId" close=")">
+            #{articleId}
+        </foreach>
+        order by a.created_at desc
+    </select>
+
+    <select id="getTagList" resultType="string">
+        select t.name
+        from tag as t
+        inner join tag_article as ta
+        on ta.tag_id = t.id
+        inner join article as a on a.id = ta.article_id
+        <where>
+            <if test="articleId!=null">
+                a.id = #{articleId}
+            </if>
+        </where>
+    </select>
+
+    <select id="getAuthor" resultType="realworld.user.Profile">
+        select u.username,
+        u.bio,
+        u.image,
+        exists(select 1
+        from user_follow_user as ufu
+        inner join user as u on u.id = ufu.follow_id
+        where u.id = #{userId}
+        <choose>
+            <when test="loginId!=null">
+                and ufu.user_id = #{loginId}
+            </when>
+            <otherwise>
+                and ufu.user_id = 0
+            </otherwise>
+        </choose>
+        ) as following
+        from user as u where u.id = #{userId}
+    </select>
+
+    <select id="getArticleIds" resultType="java.lang.Long"
+            parameterType="realworld.article.ArticlesParam">
+        select distinct(a.id),a.created_at from article as a
+        inner join user as u on a.user_id=u.id
+        left join user_favorite_article as ufa on ufa.article_id=a.id
+        left join user as uf on uf.id = ufa.user_id
+        left join tag_article as ta on ta.article_id = a.id
+        left join tag as t on t.id = ta.tag_id
+        <where>
+            <if test="param.author!=null">
+                and u.username = #{param.author}
+            </if>
+            <if test="param.tag!=null">
+                and t.name = #{param.tag}
+            </if>
+            <if test="param.favorited!=null">
+                and uf.username = #{param.favorited}
+            </if>
+        </where>
+        order by a.created_at desc
+    </select>
+</mapper>
+
