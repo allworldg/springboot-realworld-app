@@ -41,6 +41,10 @@ spring:
   mvc:
     #spring-devtools will log all exception even the exception is resolved,so close it.
     log-resolved-exception: false
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  mapper-locations: classpath:mapper/*.xml
 
 #  jackson:
 #    deserialization:

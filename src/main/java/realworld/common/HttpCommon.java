@@ -1,10 +1,9 @@
 package realworld.common;
 
 public class HttpCommon {
-    public static String UNAUTHORIZED = "need login";
-    public static String NOT_FOUND = "not found";
-    public static String IS_INVALID = "is invalid";
-
-    public static String EMAIL_PASSWORD_INVALID = "email or password";
-
+    public static final String UNAUTHORIZED = "need login";
+    public static final String NOT_FOUND = "not found";
+    public static final String IS_INVALID = "is invalid";
+    public static final String EMAIL_PASSWORD_INVALID = "email or password";
+    public static final String LIMIT_MIN_ZERO = "should be greater than 0";
 }

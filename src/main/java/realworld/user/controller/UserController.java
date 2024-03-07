@@ -51,7 +51,7 @@ public class UserController {
             throws Exception {
         User user = userService.addUser(userRegister);
         user = userService.findUserByUserId(user.getId());
-        LoginUser loginUser = new LoginUser(user.getEmail(), "", user.getUsername(),
+        LoginUser loginUser = new LoginUser(user.getId(), user.getEmail(), "", user.getUsername(),
                 tokenService.createTokenByUserId(user.getId())
                 , user.getBio(), user.getImage());
         return ResponseEntity.status(HttpStatus.CREATED).body(loginUser);

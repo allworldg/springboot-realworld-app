@@ -1,8 +1,10 @@
 package realworld.user.repository;
 
+import org.springframework.stereotype.Service;
 import realworld.user.User;
 
 import java.util.Optional;
+
 
 public interface UserRepository {
     Optional<User> findUserByUserId(long id);

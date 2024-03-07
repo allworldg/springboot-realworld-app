@@ -35,7 +35,7 @@ public class LoginUserService implements UserDetailsService {
 
     public UserDetails createUserDetails(User user) {
         String token = tokenService.createTokenByUserId(user.getId());
-        return new LoginUser(user.getEmail(), user.getPassword(),
+        return new LoginUser(user.getId(), user.getEmail(), user.getPassword(),
                 user.getUsername(),
                 token, user.getBio(),
                 user.getImage());

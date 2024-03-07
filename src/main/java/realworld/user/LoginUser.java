@@ -15,6 +15,8 @@ import java.util.Collection;
 @JsonTypeName("user")
 public class LoginUser implements UserDetails {
     private static final long serialVersionUID = 1L;
+    @JsonIgnore
+    private Long id;
     private String email;
     private String token;
     private String username;
@@ -28,8 +30,10 @@ public class LoginUser implements UserDetails {
     }
 
 
-    public LoginUser(String email, String password, String username, String token, String bio,
+    public LoginUser(Long id, String email, String password, String username, String token,
+                     String bio,
                      String image) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.token = token;
@@ -39,11 +43,20 @@ public class LoginUser implements UserDetails {
     }
 
     public LoginUser(User user) {
+        this.id = user.getId();
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.username = user.getUsername();
         this.bio = user.getBio();
         this.image = user.getImage();
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getEmail() {

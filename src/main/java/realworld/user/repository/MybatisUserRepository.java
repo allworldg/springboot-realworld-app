@@ -1,10 +1,7 @@
 package realworld.user.repository;
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import realworld.user.User;
-import realworld.user.repository.UserRepository;
-import realworld.user.repository.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
