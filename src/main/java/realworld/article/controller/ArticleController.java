@@ -3,6 +3,7 @@ package realworld.article.controller;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,10 +27,11 @@ public class ArticleController {
             @RequestParam(name = "author", required = false) String author,
             @RequestParam(name = "favorited", required = false) String favorited,
             @RequestParam(name = "limit", defaultValue = "20") int limit,
-            @RequestParam(name = "offset", defaultValue = "1") int offset
+            @RequestParam(name = "offset", defaultValue = "1") int offset,
+            @AuthenticationPrincipal LoginUser user
     ) {
         ArticlesParam articlesParam = new ArticlesParam(tag, author, favorited, limit, offset);
-        ArticlesDTO articlesDTO = articleService.getArticlesDtoList(articlesParam);
+        ArticlesDTO articlesDTO = articleService.getArticlesDtoList(articlesParam, user);
         return articlesDTO;
     }
 

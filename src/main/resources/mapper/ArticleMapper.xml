@@ -26,10 +26,15 @@
         from article as a
         inner join user as u
         on a.user_id = u.id
-        where a.id in
-        <foreach collection="ids" open="(" index="index" separator="," item="articleId" close=")">
-            #{articleId}
-        </foreach>
+        <where>
+            <if test="ids!=null and !ids.isEmpty()">
+                and a.id in
+                <foreach collection="ids" open="(" index="index" separator="," item="articleId"
+                         close=")">
+                    #{articleId}
+                </foreach>
+            </if>
+        </where>
         order by a.created_at desc
     </select>
 
