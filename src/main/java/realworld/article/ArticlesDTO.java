@@ -9,7 +9,9 @@ public class ArticlesDTO {
         this.articles = articles;
         this.articlesCount = articlesCount;
     }
-    public ArticlesDTO(){}
+
+    public ArticlesDTO() {
+    }
 
     private List<ArticleDTO> articles;
     private int articlesCount;
