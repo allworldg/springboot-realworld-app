@@ -3,6 +3,7 @@ package realworld.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -42,8 +43,9 @@ public class WebSecurityConfig {
                            manage -> manage.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                    .addFilterBefore(tokenFilter(), UsernamePasswordAuthenticationFilter.class)
                    .authorizeHttpRequests(request -> request
-                           .requestMatchers("/users/login", "/users", "/articles", "/tags")
+                           .requestMatchers("/users/login", "/users", "/tags")
                            .permitAll()
+                           .requestMatchers(HttpMethod.GET, "/articles").permitAll()
                            .anyRequest()
                            .authenticated()
 

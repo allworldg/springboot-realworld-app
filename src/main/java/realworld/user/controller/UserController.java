@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import realworld.user.LoginParam;
@@ -20,7 +21,6 @@ import realworld.user.User;
 import realworld.utils.TokenService;
 
 @RestController
-@RequestMapping("/users")
 public class UserController {
     private UserService userService;
 
@@ -35,7 +35,7 @@ public class UserController {
         this.tokenService = tokenService;
     }
 
-    @PostMapping("/login")
+    @PostMapping("/users/login")
     public LoginUser login(@Valid @RequestBody LoginParam loginParam) {
         UsernamePasswordAuthenticationToken token =
                 new UsernamePasswordAuthenticationToken(loginParam.getEmail(),
@@ -46,7 +46,7 @@ public class UserController {
         return loginUser;
     }
 
-    @PostMapping()
+    @PostMapping("/users")
     public ResponseEntity<LoginUser> register(@Valid @RequestBody UserRegister userRegister)
             throws Exception {
         User user = userService.addUser(userRegister);
@@ -55,5 +55,10 @@ public class UserController {
                 tokenService.createTokenByUserId(user.getId())
                 , user.getBio(), user.getImage());
         return ResponseEntity.status(HttpStatus.CREATED).body(loginUser);
+    }
+
+    @GetMapping("/user")
+    public LoginUser getCurrentUser(@AuthenticationPrincipal LoginUser loginUser) {
+        return loginUser;
     }
 }

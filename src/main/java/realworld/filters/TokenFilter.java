@@ -14,6 +14,7 @@ import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.function.ServerRequest;
 import realworld.user.LoginUser;
+import realworld.user.User;
 import realworld.user.service.UserService;
 import realworld.utils.TokenService;
 
@@ -35,11 +36,18 @@ public class TokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
-        String authorization = request.getHeader("Authorization");
-        Optional.ofNullable(authorization).map(auth -> tokenService.getIdByToken(auth))
+        String authorization = StringUtils.substring(request.getHeader("Authorization"), 6);
+        Optional.ofNullable(authorization).map(auth ->
+                        {
+                            Long idByToken = tokenService.getIdByToken(auth);
+                            return idByToken;
+
+                        }
+                )
                 .map(userId -> {
                     tokenService.updateExpiredTime(authorization);
-                    return userService.findUserByUserId(userId);
+                    User userByUserId = userService.findUserByUserId(userId);
+                    return userByUserId;
                 })
                 .ifPresent(user -> {
                     LoginUser loginUser = new LoginUser(user);
