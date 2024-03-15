@@ -6,6 +6,5 @@
         insert into tag_article (tag_id, article_id)
         values (#{tagId}, #{articleId})
     </insert>
-
 </mapper>
 

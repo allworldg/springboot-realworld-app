@@ -30,9 +30,10 @@ public class ArticleController {
     }
 
     @PostMapping("/articles")
-    public ArticleDTO createArticle(@RequestBody @Valid ArticleParam articleParam,
-                                    @AuthenticationPrincipal LoginUser user) {
-        return articleService.createArticle(articleParam, user);
+    public ArticleVo createArticle(@RequestBody @Valid ArticleParam articleParam,
+                                   @AuthenticationPrincipal LoginUser user) {
+        ArticleDTO articleDTO = articleService.createArticle(articleParam, user);
+        return new ArticleVo(articleDTO);
     }
 
 
