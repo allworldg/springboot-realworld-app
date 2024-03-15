@@ -1,9 +1,12 @@
 package realworld.article;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 import java.util.List;
 
-public class ArticlesDTO {
 
+public class ArticlesDTO {
 
     public ArticlesDTO(List<ArticleDTO> articles, int articlesCount) {
         this.articles = articles;

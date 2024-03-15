@@ -1,20 +1,23 @@
 package realworld.article;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.springframework.data.annotation.Transient;
 import realworld.user.Profile;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class ArticleDTO {
 
+public class ArticleDTO {
 
     public ArticleDTO() {
     }
 
     public ArticleDTO(String slug, String title, String description, String body,
                       List<String> tagList,
-                      Date createdAt, Profile author) {
+                      Date createdAt, Profile author, boolean favorited, int favoritesCount) {
         this.slug = slug;
         this.title = title;
         this.description = description;
@@ -22,8 +25,17 @@ public class ArticleDTO {
         this.tagList = tagList;
         this.createdAt = createdAt;
         this.author = author;
+        this.favorited = favorited;
+        this.favoritesCount = favoritesCount;
     }
 
+    public ArticleDTO(Article article) {
+        this.slug = article.getSlug();
+        this.title = article.getTitle();
+        this.description = article.getDescription();
+        this.body = article.getBody();
+        this.createdAt = article.getCreatedAt();
+    }
 
     public String getSlug() {
         return slug;
@@ -81,6 +93,21 @@ public class ArticleDTO {
         this.author = author;
     }
 
+    public boolean isFavorited() {
+        return favorited;
+    }
+
+    public void setFavorited(boolean favorited) {
+        this.favorited = favorited;
+    }
+
+    public int getFavoritesCount() {
+        return favoritesCount;
+    }
+
+    public void setFavoritesCount(Integer favoritesCount) {
+        this.favoritesCount = favoritesCount;
+    }
 
     @Override
     public String toString() {
@@ -92,6 +119,8 @@ public class ArticleDTO {
                 ", tagList=" + tagList +
                 ", createdAt=" + createdAt +
                 ", author=" + author +
+                ", favorited=" + favorited +
+                ", favoriteCount" + favoritesCount +
                 '}';
     }
 
@@ -102,6 +131,9 @@ public class ArticleDTO {
     private List<String> tagList;
     private Date createdAt;
     private Profile author;
+    private boolean favorited;
+
+    private int favoritesCount;
 
 
 }

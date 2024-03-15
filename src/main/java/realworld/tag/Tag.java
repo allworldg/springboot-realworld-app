@@ -1,12 +1,21 @@
 package realworld.tag;
 
 
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 @TableName("tag")
 public class Tag {
-    @TableId
+
+    public Tag() {
+    }
+
+    public Tag(String name) {
+        this.name = name;
+    }
+
+    @TableId(type = IdType.AUTO, value = "id")
     private Long id;
     private String name;
 

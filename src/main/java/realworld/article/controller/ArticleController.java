@@ -4,16 +4,10 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import realworld.article.ArticlesDTO;
-import realworld.article.ArticlesParam;
+import org.springframework.web.bind.annotation.*;
+import realworld.article.*;
 import realworld.article.service.ArticleService;
 import realworld.user.LoginUser;
-
-import java.util.List;
 
 
 @RestController
@@ -34,5 +28,12 @@ public class ArticleController {
         ArticlesDTO articlesDTO = articleService.getArticlesDtoList(articlesParam, user);
         return articlesDTO;
     }
+
+    @PostMapping("/articles")
+    public ArticleDTO createArticle(@RequestBody @Valid ArticleParam articleParam,
+                                    @AuthenticationPrincipal LoginUser user) {
+        return articleService.createArticle(articleParam, user);
+    }
+
 
 }

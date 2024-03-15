@@ -10,9 +10,15 @@
         <result property="createdAt" column="created_at"/>
         <association property="author" column="{userId=user_id,loginId=loginId}"
                      select="getAuthor"/>
+        <association property="favorited" column="{loginId=loginId,articleId=id}"
+                     select="getIsFavorited"/>
+        <association property="favoritesCount" column="{articleId=id}"
+                     select="getFavoritesCount"/>
         <collection property="tagList" column="{articleId=id}" javaType="arraylist"
                     ofType="string" select="getTagList"/>
     </resultMap>
+
+
     <select id="getArticleDtoList" resultMap="ArticleDto">
         select a.slug,
         u.username,
@@ -33,6 +39,28 @@
                          close=")">
                     #{articleId}
                 </foreach>
+            </if>
+        </where>
+        order by a.created_at desc
+    </select>
+
+    <select id="getArticleIds" resultType="java.lang.Long"
+            parameterType="realworld.article.ArticlesParam">
+        select distinct(a.id),a.created_at from article as a
+        inner join user as u on a.user_id=u.id
+        left join user_favorite_article as ufa on ufa.article_id=a.id
+        left join user as uf on uf.id = ufa.user_id
+        left join tag_article as ta on ta.article_id = a.id
+        left join tag as t on t.id = ta.tag_id
+        <where>
+            <if test="param.author!=null">
+                and u.username = #{param.author}
+            </if>
+            <if test="param.tag!=null">
+                and t.name = #{param.tag}
+            </if>
+            <if test="param.favorited!=null">
+                and uf.username = #{param.favorited}
             </if>
         </where>
         order by a.created_at desc
@@ -71,26 +99,29 @@
         from user as u where u.id = #{userId}
     </select>
 
-    <select id="getArticleIds" resultType="java.lang.Long"
-            parameterType="realworld.article.ArticlesParam">
-        select distinct(a.id),a.created_at from article as a
-        inner join user as u on a.user_id=u.id
-        left join user_favorite_article as ufa on ufa.article_id=a.id
-        left join user as uf on uf.id = ufa.user_id
-        left join tag_article as ta on ta.article_id = a.id
-        left join tag as t on t.id = ta.tag_id
-        <where>
-            <if test="param.author!=null">
-                and u.username = #{param.author}
-            </if>
-            <if test="param.tag!=null">
-                and t.name = #{param.tag}
-            </if>
-            <if test="param.favorited!=null">
-                and uf.username = #{param.favorited}
-            </if>
-        </where>
-        order by a.created_at desc
+    <select id="getIsFavorited" resultType="boolean">
+        select count(1)
+        from user_favorite_article as ufa
+        inner join user as u on ufa.user_id = u.id
+        inner join article as a on ufa.article_id=a.id
+        where ufa.article_id=#{articleId}
+        <choose>
+            <when test="loginId!=null">
+                and ufa.user_id=#{loginId}
+            </when>
+            <otherwise>
+                and ufa.user_id=0
+            </otherwise>
+        </choose>
     </select>
+
+    <select id="getFavoritesCount" resultType="int">
+        select count(1)
+        from user_favorite_article as ufa
+                 inner join article as a on ufa.article_id = a.id
+                 inner join user as u on ufa.user_id = u.id
+        where ufa.article_id = #{articleId}
+    </select>
+
 </mapper>
 

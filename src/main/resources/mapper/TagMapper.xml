@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="realworld.tag.repository.TagMapper">
+    <insert id="addArticleTagRelation">
+        insert into tag_article (tag_id, article_id)
+        values (#{tagId}, #{articleId})
+    </insert>
+
+</mapper>
+
