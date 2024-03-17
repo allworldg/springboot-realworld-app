@@ -17,5 +17,7 @@ public interface ArticleRepository {
     Optional<Article> getArticleByTitle(String title);
 
     Article createArticle(ArticleParam articleParam, Long userId);
+
+    ArticleDTO getArticleBySlug(String slug,Long userId);
 //    ArticleDTO getArticleDto(ArticlesParam param, Long userId);
 }

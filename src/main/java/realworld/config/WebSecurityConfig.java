@@ -45,7 +45,8 @@ public class WebSecurityConfig {
                    .authorizeHttpRequests(request -> request
                            .requestMatchers("/users/login", "/users", "/tags")
                            .permitAll()
-                           .requestMatchers(HttpMethod.GET, "/articles").permitAll()
+                           .requestMatchers(HttpMethod.GET, "/articles", "/articles/**").permitAll()
+                           .requestMatchers("/articles/feed").authenticated()
                            .anyRequest()
                            .authenticated()
 

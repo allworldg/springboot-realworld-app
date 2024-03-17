@@ -17,5 +17,6 @@ public interface ArticleMapper extends BaseMapper<Article> {
 
     List<Long> getArticleIds(IPage<ArticleDTO> page, @Param("param") ArticlesParam param);
 
+    ArticleDTO getArticleBySlug(@Param("slug")String slug, @Param("loginId") Long loginId);
 
 }

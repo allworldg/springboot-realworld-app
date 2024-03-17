@@ -11,11 +11,12 @@ import realworld.user.LoginUser;
 
 
 @RestController
+@RequestMapping("/articles")
 public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
-    @GetMapping("/articles")
+    @GetMapping()
     public ArticlesDTO getArticles(
             @RequestParam(name = "tag", required = false) String tag,
             @RequestParam(name = "author", required = false) String author,
@@ -29,10 +30,25 @@ public class ArticleController {
         return articlesDTO;
     }
 
-    @PostMapping("/articles")
+    @PostMapping()
     public ArticleVo createArticle(@RequestBody @Valid ArticleParam articleParam,
                                    @AuthenticationPrincipal LoginUser user) {
         ArticleDTO articleDTO = articleService.createArticle(articleParam, user);
+        return new ArticleVo(articleDTO);
+    }
+
+    @GetMapping("/feed")
+    public ArticlesDTO getFeedArticles(
+            @RequestParam(name = "limit", defaultValue = "20") int limit,
+            @RequestParam(name = "offset", defaultValue = "1") int offset) {
+        System.out.println("feed controller");
+        return new ArticlesDTO();
+    }
+
+    @GetMapping("/{slug}")
+    public ArticleVo getArticle(@PathVariable String slug,
+                                @AuthenticationPrincipal LoginUser user) {
+        ArticleDTO articleDTO = articleService.getArticleDtoBySlug(slug, user);
         return new ArticleVo(articleDTO);
     }
 
