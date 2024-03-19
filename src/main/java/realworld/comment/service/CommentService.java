@@ -21,8 +21,7 @@ public class CommentService {
     private CommentRepository commentRepository;
 
     public List<CommentDto> getCommentDtos(String slug, LoginUser user) {
-        Long userId = Optional.ofNullable(user).map(u -> u.getId()).orElseGet(() -> null);
-
+        Long userId = Optional.ofNullable(user).map(LoginUser::getId).orElseGet(() -> null);
         return commentRepository.getCommentDtosBySlug(slug, userId);
     }
 }

@@ -22,15 +22,9 @@ public class ArticleService {
     public ArticlesDTO getArticlesDtoList(ArticlesParam param, LoginUser loginUser) {
         Long userId = Optional.ofNullable(loginUser).map(LoginUser::getId).orElseGet(() -> null);
         List<ArticleDTO> list = articleRepository.getArticleDtoList(param, userId);
-        ArticlesDTO articlesDTO = new ArticlesDTO(list, list.size());
-        return articlesDTO;
+        return new ArticlesDTO(list, list.size());
     }
 
-    //    public ArticleDTO getArticle(ArticleParam param, LoginUser user) {
-//        Long userId = Optional.ofNullable(user).map(LoginUser::getId).orElseGet(() -> null);
-//        return repository.getArticleDto(param, userId);
-//    }
-//
     public ArticleDTO createArticle(ArticleParam articleParam, LoginUser user) {
         Long userId = user.getId();
         Article article = articleRepository.createArticle(articleParam, userId);
@@ -50,7 +44,7 @@ public class ArticleService {
 
     public ArticleDTO getArticleDtoBySlug(String slug, LoginUser user) {
         Long userId =
-                Optional.ofNullable(user).map(loginUser -> loginUser.getId()).orElseGet(() -> null);
+                Optional.ofNullable(user).map(LoginUser::getId).orElseGet(() -> null);
         return articleRepository.getArticleBySlug(slug, userId);
     }
 }
