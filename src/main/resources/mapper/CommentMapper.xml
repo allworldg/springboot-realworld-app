@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="realworld.comment.repository.CommentMapper">
+
+    <resultMap id="commentDto" type="realworld.comment.CommentDto">
+        <result property="id" column="id"/>
+        <result property="body" column="body"/>
+        <result property="createdAt" column="created_at"/>
+        <result property="updatedAt" column="updated_at"/>
+        <association property="author" column="{userId=userId,loginId=loginId}" select="getAuthor"/>
+    </resultMap>
+
+    <select id="getCommentDtosBySlug" resultMap="commentDto">
+        select user_id    as userId,
+               body,
+               created_at,
+               updated_at,
+               #{loginId} as loginId
+        from comment
+    </select>
+    <select id="getAuthor" resultType="realworld.user.Profile">
+        select username,
+        bio,
+        image,
+        exists(select 1
+        from user_follow_user as ufu
+        inner join
+        user as u on u.id = ufu.follow_id
+        where ufu.follow_id = #{userId}
+        <choose>
+            <when test="loginId!=null">
+                and ufu.user_id=#{loginId}
+            </when>
+            <otherwise>
+                and ufu.user_id=0
+            </otherwise>
+        </choose>
+        ) as following
+        from user as u where u.id=#{userId}
+    </select>
+
+</mapper>
