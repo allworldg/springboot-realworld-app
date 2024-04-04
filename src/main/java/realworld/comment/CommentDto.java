@@ -6,6 +6,7 @@ import realworld.user.Profile;
 
 import java.util.Date;
 
+
 public class CommentDto {
 
     private Long id;
@@ -34,6 +35,14 @@ public class CommentDto {
     private static final long serialVersionUID = 1L;
 
     public CommentDto() {
+    }
+
+    public CommentDto(Comment comment, Profile author) {
+        this.id = comment.getId();
+        this.body = comment.getBody();
+        this.createdAt = comment.getCreatedAt();
+        this.updatedAt = comment.getUpdatedAt();
+        this.author = author;
     }
 
 

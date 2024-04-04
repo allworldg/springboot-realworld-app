@@ -15,9 +15,10 @@ public class ArticleDTO {
     public ArticleDTO() {
     }
 
-    public ArticleDTO(String slug, String title, String description, String body,
+    public ArticleDTO(Long id, String slug, String title, String description, String body,
                       List<String> tagList,
                       Date createdAt, Profile author, boolean favorited, int favoritesCount) {
+        this.id = id;
         this.slug = slug;
         this.title = title;
         this.description = description;
@@ -30,11 +31,20 @@ public class ArticleDTO {
     }
 
     public ArticleDTO(Article article) {
+        this.id = article.getId();
         this.slug = article.getSlug();
         this.title = article.getTitle();
         this.description = article.getDescription();
         this.body = article.getBody();
         this.createdAt = article.getCreatedAt();
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getSlug() {
@@ -124,6 +134,7 @@ public class ArticleDTO {
                 '}';
     }
 
+    private Long id;
     private String slug;
     private String title;
     private String description;
@@ -132,7 +143,6 @@ public class ArticleDTO {
     private Date createdAt;
     private Profile author;
     private boolean favorited;
-
     private int favoritesCount;
 
 

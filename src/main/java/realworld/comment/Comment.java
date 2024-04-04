@@ -16,7 +16,7 @@ public class Comment implements Serializable {
     /**
      *
      */
-    @TableId
+    @TableId(type = IdType.AUTO, value = "id")
     private Long id;
 
     /**
@@ -42,7 +42,7 @@ public class Comment implements Serializable {
     /**
      *
      */
-    private Integer articleId;
+    private Long articleId;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
@@ -51,7 +51,7 @@ public class Comment implements Serializable {
     }
 
     public Comment(Long id, Long userId, String body, Date createdAt, Date updatedAt,
-                   Integer articleId) {
+                   Long articleId) {
         this.id = id;
         this.userId = userId;
         this.body = body;
@@ -133,14 +133,14 @@ public class Comment implements Serializable {
     /**
      *
      */
-    public Integer getArticleId() {
+    public Long getArticleId() {
         return articleId;
     }
 
     /**
      *
      */
-    public void setArticleId(Integer articleId) {
+    public void setArticleId(Long articleId) {
         this.articleId = articleId;
     }
 

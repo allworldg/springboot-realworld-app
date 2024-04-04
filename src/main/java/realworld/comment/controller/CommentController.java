@@ -1,11 +1,15 @@
 package realworld.comment.controller;
 
+import com.fasterxml.jackson.annotation.JsonRootName;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import realworld.comment.CommentDto;
+import realworld.comment.CommentVo;
 import realworld.comment.CommentsVo;
 import realworld.comment.service.CommentService;
 import realworld.user.LoginUser;
@@ -21,4 +25,35 @@ public class CommentController {
                                          @AuthenticationPrincipal LoginUser user) {
         return new CommentsVo(commentService.getCommentDtos(slug, user));
     }
+
+    @PostMapping("{slug}/comments")
+    public CommentVo createComment(@PathVariable("slug") String slug,
+                                   @AuthenticationPrincipal LoginUser user,
+                                   @Valid @RequestBody CommentParam param) {
+        return new CommentVo(commentService.addComment(slug, user, param.getBody()));
+    }
+
+
+}
+
+@JsonTypeName("comment")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,include = JsonTypeInfo.As.WRAPPER_OBJECT)
+class CommentParam {
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public CommentParam(String body) {
+        this.body = body;
+    }
+
+    public CommentParam() {
+    }
+
+    @NotBlank(message = "can not be empty")
+    private String body;
 }

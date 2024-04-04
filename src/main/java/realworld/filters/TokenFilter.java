@@ -41,7 +41,6 @@ public class TokenFilter extends OncePerRequestFilter {
                         {
                             Long idByToken = tokenService.getIdByToken(auth);
                             return idByToken;
-
                         }
                 )
                 .map(userId -> {
