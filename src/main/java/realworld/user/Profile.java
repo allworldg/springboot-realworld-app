@@ -2,7 +2,8 @@ package realworld.user;
 
 public class Profile {
 
-    public Profile(String username, String bio, String image, boolean following) {
+    public Profile(Long id, String username, String bio, String image, boolean following) {
+        this.id = id;
         this.username = username;
         this.bio = bio;
         this.image = image;
@@ -10,6 +11,15 @@ public class Profile {
     }
 
     public Profile() {
+    }
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -54,10 +64,10 @@ public class Profile {
                 '}';
     }
 
+    private Long id;
     private String username;
     private String bio;
     private String image;
-
     private boolean following;
 
 }

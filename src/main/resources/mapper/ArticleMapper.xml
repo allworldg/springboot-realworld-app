@@ -101,7 +101,9 @@
     </select>
 
     <select id="getAuthor" resultType="realworld.user.Profile">
-        select u.username,
+        select
+        u.id,
+        u.username,
         u.bio,
         u.image,
         exists(select 1

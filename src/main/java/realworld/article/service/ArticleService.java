@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import realworld.article.*;
 import realworld.article.repository.ArticleRepository;
+import realworld.exception.ResourceNotFoundException;
 import realworld.tag.repository.TagRepository;
 import realworld.user.LoginUser;
 import realworld.user.Profile;
@@ -45,6 +46,9 @@ public class ArticleService {
     public ArticleDTO getArticleDtoBySlug(String slug, LoginUser user) {
         Long userId =
                 Optional.ofNullable(user).map(LoginUser::getId).orElseGet(() -> null);
-        return articleRepository.getArticleBySlug(slug, userId);
+        ArticleDTO articleDTO = articleRepository.getArticleDtoBySlug(slug, userId).orElseThrow(
+                () -> new ResourceNotFoundException());
+        return articleDTO;
+
     }
 }

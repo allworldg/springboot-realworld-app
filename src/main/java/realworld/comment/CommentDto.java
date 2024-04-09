@@ -1,6 +1,5 @@
 package realworld.comment;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import realworld.user.Profile;
 

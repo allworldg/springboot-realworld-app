@@ -27,7 +27,7 @@ import java.util.Arrays;
 @EnableMethodSecurity
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig {
+public class SecurityConfig {
     @Autowired
     LoginUserService userService;
 
@@ -49,8 +49,11 @@ public class WebSecurityConfig {
                            .requestMatchers("/articles/feed").authenticated()
                            .anyRequest()
                            .authenticated()
-
                    )
+                   .exceptionHandling(exp ->
+                           exp.authenticationEntryPoint(getMyAuthEntryPoint())
+                              .accessDeniedHandler(getMyAccessDeniedHandler()))
+
                    .build();
     }
 
@@ -60,6 +63,16 @@ public class WebSecurityConfig {
         provider.setPasswordEncoder(passwordEncoder());
         provider.setUserDetailsService(userService);
         return new ProviderManager(provider);
+    }
+
+    @Bean
+    public MyAuthenticationEntryPoint getMyAuthEntryPoint() {
+        return new MyAuthenticationEntryPoint();
+    }
+
+    @Bean
+    public MyAccessDeniedHandler getMyAccessDeniedHandler() {
+        return new MyAccessDeniedHandler();
     }
 
     @Bean

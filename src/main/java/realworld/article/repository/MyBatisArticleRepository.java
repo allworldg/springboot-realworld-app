@@ -61,12 +61,16 @@ public class MyBatisArticleRepository implements ArticleRepository {
     }
 
     @Override
-    public ArticleDTO getArticleBySlug(String slug,Long userId) {
-        return articleMapper.getArticleBySlug(slug,userId);
+    public Optional<ArticleDTO> getArticleDtoBySlug(String slug, Long userId) {
+        return Optional.ofNullable(articleMapper.getArticleBySlug(slug, userId));
     }
 
-    //    @Override
-//    public ArticleDTO getArticleDto() {
-//        return null;
-//    }
+    @Override
+    public Optional<Article> getArticleBySlug(String slug) {
+        QueryWrapper<Article> wrapper = new QueryWrapper<>();
+        wrapper.eq("slug", slug);
+        Article article = articleMapper.selectOne(wrapper);
+        return Optional.ofNullable(article);
+    }
+
 }

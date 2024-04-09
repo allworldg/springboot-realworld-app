@@ -1,14 +1,14 @@
 package realworld.comment.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import realworld.article.Article;
+import org.springframework.transaction.annotation.Transactional;
 import realworld.article.ArticleDTO;
 import realworld.article.repository.ArticleRepository;
 import realworld.comment.Comment;
 import realworld.comment.CommentDto;
 import realworld.comment.repository.CommentRepository;
+import realworld.exception.NoAuthenticationException;
 import realworld.exception.ResourceNotFoundException;
 import realworld.user.LoginUser;
 
@@ -35,19 +35,38 @@ public class CommentService {
         return commentRepository.getCommentDtosBySlug(slug, userId);
     }
 
+    @Transactional
     public CommentDto addComment(String slug, LoginUser user, String commentStr) {
         Comment comment = new Comment();
         comment.setBody(commentStr);
         comment.setCreatedAt(new Date());
         comment.setUpdatedAt(new Date());
         comment.setUserId(user.getId());
-        ArticleDTO articleDTO = articleRepository.getArticleBySlug(slug, user.getId());
-        Long articleId = Optional.ofNullable(articleDTO).map(ArticleDTO::getId)
-                                 .orElseThrow(() -> new ResourceNotFoundException());
+        ArticleDTO articleDTO = articleRepository.getArticleDtoBySlug(slug, user.getId())
+                                                 .orElseThrow(
+                                                         () -> new ResourceNotFoundException());
+        Long articleId = articleDTO.getId();
         comment.setArticleId(articleId);
         commentRepository.addComment(comment);
         CommentDto commentDto = new CommentDto(comment, articleDTO.getAuthor());
         return commentDto;
+    }
+
+    @Transactional
+    public void deleteComment(String slug, Long commentId, LoginUser user) {
+        ArticleDTO articleDTO = articleRepository.getArticleDtoBySlug(slug, user.getId())
+                                                 .orElseThrow(
+                                                         () -> new ResourceNotFoundException());
+        Comment comment = commentRepository.getCommentById(commentId)
+                                           .orElseThrow(() -> new ResourceNotFoundException());
+        if (!user.getId().equals(comment.getUserId()) &&
+                !user.getId().equals(articleDTO.getAuthor().getId())) {
+            throw new NoAuthenticationException();
+        } else {
+            commentRepository.deleteComment(commentId);
+        }
+
+
     }
 }
 

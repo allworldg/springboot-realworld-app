@@ -25,8 +25,7 @@ public class LoginUserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email)
-            throws InvalidEmailOrPasswordException {
+    public UserDetails loadUserByUsername(String email) {
         User user = userRepository.findUserByEmail(email).orElseThrow(
                 () -> new UsernameNotFoundException(HttpCommon.IS_INVALID));
         UserDetails userDetails = createUserDetails(user);

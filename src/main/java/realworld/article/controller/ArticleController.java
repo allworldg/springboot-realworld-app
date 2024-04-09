@@ -3,7 +3,6 @@ package realworld.article.controller;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import realworld.article.*;
 import realworld.article.service.ArticleService;
@@ -40,7 +39,8 @@ public class ArticleController {
     @GetMapping("/feed")
     public ArticlesDTO getFeedArticles(
             @RequestParam(name = "limit", defaultValue = "20") int limit,
-            @RequestParam(name = "offset", defaultValue = "1") int offset) {
+            @RequestParam(name = "offset", defaultValue = "1") int offset,
+            @AuthenticationPrincipal LoginUser loginUser) {
         System.out.println("feed controller");
         return new ArticlesDTO();
     }

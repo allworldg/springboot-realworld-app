@@ -6,6 +6,7 @@ import realworld.comment.Comment;
 import realworld.comment.CommentDto;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class MybatisCommentRepository implements CommentRepository {
@@ -20,5 +21,16 @@ public class MybatisCommentRepository implements CommentRepository {
     @Override
     public void addComment(Comment comment) {
         mapper.insert(comment);
+    }
+
+    @Override
+    public Optional<Comment> getCommentById(Long commentId) {
+        Comment comment = mapper.selectById(commentId);
+        return Optional.ofNullable(comment);
+    }
+
+    @Override
+    public void deleteComment(Long commentId) {
+        mapper.deleteById(commentId);
     }
 }
