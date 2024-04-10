@@ -23,6 +23,7 @@ import realworld.filters.TokenFilter;
 import realworld.user.service.LoginUserService;
 
 import java.util.Arrays;
+import java.util.List;
 
 @EnableMethodSecurity
 @Configuration
@@ -47,12 +48,13 @@ public class SecurityConfig {
                            .permitAll()
                            .requestMatchers(HttpMethod.GET, "/articles", "/articles/**").permitAll()
                            .requestMatchers("/articles/feed").authenticated()
+                           .requestMatchers("/error").permitAll()
                            .anyRequest()
                            .authenticated()
                    )
-                   .exceptionHandling(exp ->
-                           exp.authenticationEntryPoint(getMyAuthEntryPoint())
-                              .accessDeniedHandler(getMyAccessDeniedHandler()))
+//                   .exceptionHandling(exp ->
+//                           exp.authenticationEntryPoint(getMyAuthEntryPoint())
+//                              .accessDeniedHandler(getMyAccessDeniedHandler()))
 
                    .build();
     }
@@ -88,7 +90,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(Arrays.asList("*"));
+        config.setAllowedOrigins(List.of("*"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "DELETE", "PUT"));
         config.setAllowCredentials(false);
         config.setAllowedHeaders(Arrays.asList("Authorization", "Content-type", "Cache-Control"));
