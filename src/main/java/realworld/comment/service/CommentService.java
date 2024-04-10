@@ -44,21 +44,20 @@ public class CommentService {
         comment.setUserId(user.getId());
         ArticleDTO articleDTO = articleRepository.getArticleDtoBySlug(slug, user.getId())
                                                  .orElseThrow(
-                                                         () -> new ResourceNotFoundException());
+                                                         ResourceNotFoundException::new);
         Long articleId = articleDTO.getId();
         comment.setArticleId(articleId);
         commentRepository.addComment(comment);
-        CommentDto commentDto = new CommentDto(comment, articleDTO.getAuthor());
-        return commentDto;
+        return new CommentDto(comment, articleDTO.getAuthor());
     }
 
     @Transactional
     public void deleteComment(String slug, Long commentId, LoginUser user) {
         ArticleDTO articleDTO = articleRepository.getArticleDtoBySlug(slug, user.getId())
                                                  .orElseThrow(
-                                                         () -> new ResourceNotFoundException());
+                                                         ResourceNotFoundException::new);
         Comment comment = commentRepository.getCommentById(commentId)
-                                           .orElseThrow(() -> new ResourceNotFoundException());
+                                           .orElseThrow(ResourceNotFoundException::new);
         if (!user.getId().equals(comment.getUserId()) &&
                 !user.getId().equals(articleDTO.getAuthor().getId())) {
             throw new NoAuthenticationException();

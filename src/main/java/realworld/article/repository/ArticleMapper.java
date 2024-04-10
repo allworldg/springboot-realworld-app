@@ -2,6 +2,7 @@ package realworld.article.repository;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import realworld.article.Article;
@@ -19,4 +20,5 @@ public interface ArticleMapper extends BaseMapper<Article> {
 
     ArticleDTO getArticleBySlug(@Param("slug")String slug, @Param("loginId") Long loginId);
 
+    List<Long> getFeedArticleIds(@Param("page") Page<ArticleDTO> page, @Param("id") Long id);
 }

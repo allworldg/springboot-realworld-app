@@ -19,7 +19,7 @@
     </resultMap>
 
     <sql id="getArticleIds">
-        select distinct(a.id), a.created_at
+        select distinct a.id, a.created_at
         from article as a
                  inner join user as u on a.user_id = u.id
                  left join user_favorite_article as ufa on ufa.article_id = a.id
@@ -27,32 +27,6 @@
                  left join tag_article as ta on ta.article_id = a.id
                  left join tag as t on t.id = ta.tag_id
     </sql>
-
-
-    <select id="getArticleDtoList" resultMap="ArticleDto">
-        select a.slug,
-        u.username,
-        a.body,
-        a.description,
-        a.title,
-        a.created_at,
-        a.user_id,
-        a.id,
-        #{loginId} as loginId
-        from article as a
-        inner join user as u
-        on a.user_id = u.id
-        <where>
-            <if test="ids!=null and !ids.isEmpty()">
-                and a.id in
-                <foreach collection="ids" open="(" index="index" separator="," item="articleId"
-                         close=")">
-                    #{articleId}
-                </foreach>
-            </if>
-        </where>
-        order by a.created_at desc
-    </select>
 
     <select id="getArticleIds" resultType="java.lang.Long"
             parameterType="realworld.article.ArticlesParam">
@@ -70,6 +44,33 @@
         </where>
         order by a.created_at desc
     </select>
+
+
+    <select id="getArticleDtoList" resultMap="ArticleDto">
+        select a.slug,
+        u.username,
+        a.body,
+        a.description,
+        a.title,
+        a.created_at,
+        a.user_id,
+        a.id,
+        #{loginId} as loginId
+        from article as a
+        inner join user as u
+        on a.user_id = u.id
+        <where>
+            <if test="ids!=null">
+                and a.id in
+                <foreach collection="ids" open="(" index="index" separator="," item="articleId"
+                         close=")">
+                    #{articleId}
+                </foreach>
+            </if>
+        </where>
+        order by a.created_at desc
+    </select>
+
 
     <select id="getArticleBySlug" resultMap="ArticleDto">
         select a.slug,
@@ -144,6 +145,13 @@
                  inner join article as a on ufa.article_id = a.id
                  inner join user as u on ufa.user_id = u.id
         where ufa.article_id = #{articleId}
+    </select>
+    <select id="getFeedArticleIds" resultType="java.lang.Long">
+        select a.id
+        from article as a
+                 inner join user_follow_user ufu on a.user_id = ufu.follow_id
+                 join user as u on ufu.user_id = u.id
+        where u.id = #{id}
     </select>
 
 </mapper>

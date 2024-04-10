@@ -20,11 +20,11 @@ public class ArticleController {
             @RequestParam(name = "tag", required = false) String tag,
             @RequestParam(name = "author", required = false) String author,
             @RequestParam(name = "favorited", required = false) String favorited,
-            @RequestParam(name = "limit", defaultValue = "20") int limit,
-            @RequestParam(name = "offset", defaultValue = "1") int offset,
+            @RequestParam(name = "limit", defaultValue = "10") int limit,
+            @RequestParam(name = "offset", defaultValue = "0") int offset,
             @AuthenticationPrincipal LoginUser user
     ) {
-        ArticlesParam articlesParam = new ArticlesParam(tag, author, favorited, limit, offset);
+        ArticlesParam articlesParam = new ArticlesParam(tag, author, favorited, offset, limit);
         ArticlesDTO articlesDTO = articleService.getArticlesDtoList(articlesParam, user);
         return articlesDTO;
     }
@@ -38,11 +38,12 @@ public class ArticleController {
 
     @GetMapping("/feed")
     public ArticlesDTO getFeedArticles(
-            @RequestParam(name = "limit", defaultValue = "20") int limit,
+            @RequestParam(name = "limit", defaultValue = "10") int limit,
             @RequestParam(name = "offset", defaultValue = "1") int offset,
             @AuthenticationPrincipal LoginUser loginUser) {
-        System.out.println("feed controller");
-        return new ArticlesDTO();
+        ArticlesParam articlesParam = new ArticlesParam(null, null, null, offset, limit);
+        return articleService.getFeedArticles(articlesParam, loginUser);
+
     }
 
     @GetMapping("/{slug}")

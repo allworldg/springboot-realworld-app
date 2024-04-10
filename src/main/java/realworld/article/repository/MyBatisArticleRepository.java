@@ -6,11 +6,9 @@ import com.github.slugify.Slugify;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import realworld.article.Article;
-import realworld.article.ArticleDTO;
-import realworld.article.ArticleParam;
-import realworld.article.ArticlesParam;
+import realworld.article.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -22,16 +20,18 @@ public class MyBatisArticleRepository implements ArticleRepository {
 
 
     @Override
-    public List<Long> getArticleIds(ArticlesParam param) {
-        Page<ArticleDTO> page = new Page<>(param.getOffset(), param.getLimit());
-        return articleMapper.getArticleIds(page, param);
-    }
-
-    @Override
-    public List<ArticleDTO> getArticleDtoList(ArticlesParam param, Long userId) {
-        List<Long> articleIds = getArticleIds(param);
-        List<ArticleDTO> articleDTOList = articleMapper.getArticleDtoList(articleIds, userId);
-        return articleDTOList;
+    public ArticlesDTO getArticleDtoList(ArticlesParam param, Long userId) {
+        Page<ArticleDTO> page =
+                new Page<>(param.getOffset() / param.getLimit() + 1, param.getLimit());
+        List<Long> articleIds = articleMapper.getArticleIds(page, param);
+        ArticlesDTO articlesDTO = new ArticlesDTO();
+        articlesDTO.setArticlesCount(page.getTotal());
+        if (articleIds.isEmpty()) {
+            articlesDTO.setArticles(new ArrayList<>());
+        } else {
+            articlesDTO.setArticles(articleMapper.getArticleDtoList(articleIds, userId));
+        }
+        return articlesDTO;
     }
 
     @Override
@@ -73,4 +73,16 @@ public class MyBatisArticleRepository implements ArticleRepository {
         return Optional.ofNullable(article);
     }
 
+    @Override
+    public ArticlesDTO getFeedArticle(ArticlesParam param, Long id) {
+        Page<ArticleDTO> page =
+                new Page<>(param.getOffset() / param.getLimit() + 1, param.getLimit());
+        List<Long> feedArticleIds = articleMapper.getFeedArticleIds(page, id);
+        if (feedArticleIds.isEmpty()) {
+            return new ArticlesDTO(new ArrayList<>(), page.getTotal());
+        } else {
+            return new ArticlesDTO(articleMapper.getArticleDtoList(feedArticleIds, id),
+                    page.getTotal());
+        }
+    }
 }

@@ -9,7 +9,6 @@ import realworld.tag.repository.TagRepository;
 import realworld.user.LoginUser;
 import realworld.user.Profile;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -22,8 +21,7 @@ public class ArticleService {
 
     public ArticlesDTO getArticlesDtoList(ArticlesParam param, LoginUser loginUser) {
         Long userId = Optional.ofNullable(loginUser).map(LoginUser::getId).orElseGet(() -> null);
-        List<ArticleDTO> list = articleRepository.getArticleDtoList(param, userId);
-        return new ArticlesDTO(list, list.size());
+        return articleRepository.getArticleDtoList(param, userId);
     }
 
     public ArticleDTO createArticle(ArticleParam articleParam, LoginUser user) {
@@ -47,8 +45,12 @@ public class ArticleService {
         Long userId =
                 Optional.ofNullable(user).map(LoginUser::getId).orElseGet(() -> null);
         ArticleDTO articleDTO = articleRepository.getArticleDtoBySlug(slug, userId).orElseThrow(
-                () -> new ResourceNotFoundException());
+                ResourceNotFoundException::new);
         return articleDTO;
 
+    }
+
+    public ArticlesDTO getFeedArticles(ArticlesParam articlesParam, LoginUser loginUser) {
+        return articleRepository.getFeedArticle(articlesParam, loginUser.getId());
     }
 }

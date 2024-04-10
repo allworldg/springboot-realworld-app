@@ -1,18 +1,12 @@
 package realworld.article.repository;
 
-import realworld.article.Article;
-import realworld.article.ArticleDTO;
-import realworld.article.ArticleParam;
-import realworld.article.ArticlesParam;
+import realworld.article.*;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface ArticleRepository {
-    List<ArticleDTO> getArticleDtoList(ArticlesParam param, Long userId);
 
-    List<Long> getArticleIds(ArticlesParam param);
-
+    ArticlesDTO getArticleDtoList(ArticlesParam param, Long userId);
 
     Optional<Article> getArticleByTitle(String title);
 
@@ -21,4 +15,6 @@ public interface ArticleRepository {
     Optional<ArticleDTO> getArticleDtoBySlug(String slug, Long userId);
 
     Optional<Article> getArticleBySlug(String slug);
+
+    ArticlesDTO getFeedArticle(ArticlesParam articlesParam, Long id);
 }
