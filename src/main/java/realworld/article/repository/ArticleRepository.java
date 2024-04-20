@@ -21,4 +21,6 @@ public interface ArticleRepository {
     void addFavorite(Long articleId, Long userId);
 
     boolean isAlreadyFavorited(Long articleId, Long userId);
+
+    void deleteFavorite(Long articleId, Long userId);
 }

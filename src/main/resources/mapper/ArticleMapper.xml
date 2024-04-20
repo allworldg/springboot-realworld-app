@@ -167,5 +167,11 @@
           and ufa.user_id = #{userId}
     </select>
 
+    <delete id="deleteFavorited">
+        delete
+        from user_favorite_article
+        where user_id = #{userId}
+          and article_id = #{articleId}
+    </delete>
 </mapper>
 

@@ -25,4 +25,5 @@ public interface ArticleMapper extends BaseMapper<Article> {
     void addFavorite(@Param("articleId") Long articleId, @Param("userId") Long userId);
 
     boolean isAlreadyFavorited(@Param("articleId") Long articleId, @Param("userId") Long userId);
+    void deleteFavorited(@Param("articleId") Long articleId, @Param("userId") Long userId);
 }

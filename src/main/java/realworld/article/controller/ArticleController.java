@@ -56,14 +56,13 @@ public class ArticleController {
     @PostMapping("/{slug}/favorite")
     public ArticleVo addfavorite(@PathVariable String slug,
                                  @AuthenticationPrincipal LoginUser user) {
-        articleService.addFavorite(slug, user);
-        return new ArticleVo(articleService.getArticleDtoBySlug(slug, user));
+        return new ArticleVo(articleService.addFavorite(slug, user));
     }
 
     @DeleteMapping("/{slug}/favorite")
     public ArticleVo deleteFavorite(@PathVariable String slug,
                                     @AuthenticationPrincipal LoginUser user) {
-        return null;
+        return new ArticleVo(articleService.deleteFavorite(slug,user));
     }
 
 }

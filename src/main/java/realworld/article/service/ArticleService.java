@@ -62,8 +62,17 @@ public class ArticleService {
         boolean favorited = articleRepository.isAlreadyFavorited(articleId, userId);
         if (!favorited) {
             articleRepository.addFavorite(articleDto.getId(), user.getId());
-            articleDto.setFavoritesCount(articleDto.getFavoritesCount() + 1);
         }
-        return articleDto;
+        return articleRepository.getArticleDtoBySlug(slug, userId)
+                                .orElseThrow(ResourceNotFoundException::new);
+    }
+
+    public ArticleDTO deleteFavorite(String slug, LoginUser user) {
+        Long userId = user.getId();
+        ArticleDTO article = articleRepository.getArticleDtoBySlug(slug, userId)
+                                              .orElseThrow(ResourceNotFoundException::new);
+        Long articleId = article.getId();
+        articleRepository.deleteFavorite(articleId, user.getId());
+        return articleRepository.getArticleDtoBySlug(slug, userId).orElseThrow(ResourceNotFoundException::new);
     }
 }
