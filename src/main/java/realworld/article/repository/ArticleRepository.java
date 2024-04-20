@@ -17,4 +17,8 @@ public interface ArticleRepository {
     Optional<Article> getArticleBySlug(String slug);
 
     ArticlesDTO getFeedArticle(ArticlesParam articlesParam, Long id);
+
+    void addFavorite(Long articleId, Long userId);
+
+    boolean isAlreadyFavorited(Long articleId, Long userId);
 }

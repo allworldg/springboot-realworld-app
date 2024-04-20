@@ -154,5 +154,18 @@
         where u.id = #{id}
     </select>
 
+
+    <insert id="addFavorite">
+        insert into user_favorite_article (user_id, article_id)
+        values (#{userId}, #{articleId})
+    </insert>
+
+    <select id="isAlreadyFavorited" resultType="java.lang.Boolean">
+        select count(1)
+        from user_favorite_article as ufa
+        where ufa.article_id = #{articleId}
+          and ufa.user_id = #{userId}
+    </select>
+
 </mapper>
 

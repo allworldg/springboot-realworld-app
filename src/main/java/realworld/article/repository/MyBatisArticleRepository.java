@@ -85,4 +85,14 @@ public class MyBatisArticleRepository implements ArticleRepository {
                     page.getTotal());
         }
     }
+
+    @Override
+    public void addFavorite(Long articleId, Long userId) {
+        articleMapper.addFavorite(articleId, userId);
+    }
+
+    @Override
+    public boolean isAlreadyFavorited(Long articleId, Long userId) {
+        return articleMapper.isAlreadyFavorited(articleId,userId);
+    }
 }

@@ -18,7 +18,11 @@ public interface ArticleMapper extends BaseMapper<Article> {
 
     List<Long> getArticleIds(IPage<ArticleDTO> page, @Param("param") ArticlesParam param);
 
-    ArticleDTO getArticleBySlug(@Param("slug")String slug, @Param("loginId") Long loginId);
+    ArticleDTO getArticleBySlug(@Param("slug") String slug, @Param("loginId") Long loginId);
 
     List<Long> getFeedArticleIds(@Param("page") Page<ArticleDTO> page, @Param("id") Long id);
+
+    void addFavorite(@Param("articleId") Long articleId, @Param("userId") Long userId);
+
+    boolean isAlreadyFavorited(@Param("articleId") Long articleId, @Param("userId") Long userId);
 }

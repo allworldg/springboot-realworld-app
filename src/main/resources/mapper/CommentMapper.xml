@@ -20,6 +20,7 @@
                updated_at,
                #{loginId} as loginId
         from comment
+        order by created_at
     </select>
     <select id="getAuthor" resultType="realworld.user.Profile">
         select

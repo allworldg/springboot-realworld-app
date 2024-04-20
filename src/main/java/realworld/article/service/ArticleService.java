@@ -53,4 +53,17 @@ public class ArticleService {
     public ArticlesDTO getFeedArticles(ArticlesParam articlesParam, LoginUser loginUser) {
         return articleRepository.getFeedArticle(articlesParam, loginUser.getId());
     }
+
+    public ArticleDTO addFavorite(String slug, LoginUser user) {
+        Long userId = user.getId();
+        ArticleDTO articleDto = articleRepository.getArticleDtoBySlug(slug, userId)
+                                                 .orElseThrow(ResourceNotFoundException::new);
+        Long articleId = articleDto.getId();
+        boolean favorited = articleRepository.isAlreadyFavorited(articleId, userId);
+        if (!favorited) {
+            articleRepository.addFavorite(articleDto.getId(), user.getId());
+            articleDto.setFavoritesCount(articleDto.getFavoritesCount() + 1);
+        }
+        return articleDto;
+    }
 }

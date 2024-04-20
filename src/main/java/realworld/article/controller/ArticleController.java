@@ -53,5 +53,17 @@ public class ArticleController {
         return new ArticleVo(articleDTO);
     }
 
+    @PostMapping("/{slug}/favorite")
+    public ArticleVo addfavorite(@PathVariable String slug,
+                                 @AuthenticationPrincipal LoginUser user) {
+        articleService.addFavorite(slug, user);
+        return new ArticleVo(articleService.getArticleDtoBySlug(slug, user));
+    }
+
+    @DeleteMapping("/{slug}/favorite")
+    public ArticleVo deleteFavorite(@PathVariable String slug,
+                                    @AuthenticationPrincipal LoginUser user) {
+        return null;
+    }
 
 }
