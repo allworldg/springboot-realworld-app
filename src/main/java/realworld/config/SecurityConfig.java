@@ -44,7 +44,7 @@ public class SecurityConfig {
                            manage -> manage.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                    .addFilterBefore(tokenFilter(), UsernamePasswordAuthenticationFilter.class)
                    .authorizeHttpRequests(request -> request
-                           .requestMatchers("/users/login", "/users", "/tags")
+                           .requestMatchers("/users/login", "/users", "/tags", "/profiles/**")
                            .permitAll()
                            .requestMatchers(HttpMethod.GET, "/articles", "/articles/**").permitAll()
                            .requestMatchers("/articles/feed").authenticated()

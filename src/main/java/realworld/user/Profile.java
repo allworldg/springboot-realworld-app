@@ -1,7 +1,12 @@
 package realworld.user;
 
-public class Profile {
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
+@JsonTypeName("profile")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
+public class Profile {
     public Profile(Long id, String username, String bio, String image, boolean following) {
         this.id = id;
         this.username = username;
@@ -64,6 +69,7 @@ public class Profile {
                 '}';
     }
 
+    @JsonIgnore
     private Long id;
     private String username;
     private String bio;

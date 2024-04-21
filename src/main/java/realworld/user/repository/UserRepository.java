@@ -1,6 +1,6 @@
 package realworld.user.repository;
 
-import org.springframework.stereotype.Service;
+import realworld.user.Profile;
 import realworld.user.User;
 
 import java.util.Optional;
@@ -13,8 +13,6 @@ public interface UserRepository {
 
     void addUser(User user);
 
-    void addFollowRelation(long userId, long followUserId);
 
-    void removeFollowRelation(long userId, long followUserId);
-
+    Optional<Profile> getProfileByUserName(String username, Long userId);
 }
