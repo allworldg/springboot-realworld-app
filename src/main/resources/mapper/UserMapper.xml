@@ -11,7 +11,7 @@
         image,
         exists
         (
-        select count(1)
+        select 1
         from user_follow_user as ufu
         inner join user as u
         on u.id = ufu.follow_id
