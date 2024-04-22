@@ -10,4 +10,10 @@ import realworld.user.User;
 @Mapper
 public interface UserMapper extends BaseMapper<User> {
     Profile getProfileByUserName(@Param("username") String username, @Param("userId") Long userId);
+
+    void addFollow(@Param("followId") Long followId, @Param("userId") Long userId);
+
+    boolean isAlreadyFollowed(@Param("followId") Long followId, @Param("userId") Long userId);
+
+    void removeFollow(@Param("username") String username,@Param("userId") Long userId);
 }

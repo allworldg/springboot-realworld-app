@@ -15,4 +15,8 @@ public interface UserRepository {
 
 
     Optional<Profile> getProfileByUserName(String username, Long userId);
+
+    void addFollow(String username, Long userId);
+
+    void removeFollow(String username, Long userId);
 }

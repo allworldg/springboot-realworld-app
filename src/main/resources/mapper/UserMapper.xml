@@ -29,5 +29,25 @@
         from user as u
         where u.username = #{username}
     </select>
+
+    <select id="isAlreadyFollowed" resultType="java.lang.Boolean">
+        select count(1)
+        from user_follow_user
+        where user_id = #{userId}
+          and follow_id = #{followId}
+    </select>
+
+    <insert id="addFollow">
+        insert into user_follow_user
+        values (#{userId}, #{followId})
+    </insert>
+    <delete id="removeFollow">
+        delete
+        from user_follow_user
+        where user_id = #{userId}
+          and follow_id = (select id
+                           from user
+                           where user.username = #{username})
+    </delete>
 </mapper>
 

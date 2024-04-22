@@ -1,11 +1,8 @@
 package realworld.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 
-@JsonTypeName("profile")
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.WRAPPER_OBJECT)
+
 public class Profile {
     public Profile(Long id, String username, String bio, String image, boolean following) {
         this.id = id;

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import realworld.user.LoginUser;
-import realworld.user.Profile;
+import realworld.user.ProfileVo;
 import realworld.user.service.ProfileService;
 
 @RestController()
@@ -14,18 +14,21 @@ public class ProfileController {
     private ProfileService profileService;
 
     @GetMapping("/{username}")
-    public Profile getProfile(@PathVariable("username") String username, @AuthenticationPrincipal
+    public ProfileVo getProfile(@PathVariable("username") String username, @AuthenticationPrincipal
     LoginUser user) {
-        return profileService.getProfile(username, user);
+        return new ProfileVo(profileService.getProfileByUserName(username, user));
     }
 
     @PostMapping("{username}/follow")
-    public Profile addFollow(@PathVariable("username") String username) {
-        return null;
+    public ProfileVo addFollow(@PathVariable("username") String username,
+                               @AuthenticationPrincipal LoginUser user) {
+        profileService.addFollow(username, user);
+        return new ProfileVo(profileService.getProfileByUserName(username, user));
     }
 
     @DeleteMapping("{username}/follow")
-    public Profile unFollow(@PathVariable("username") String username) {
-        return null;
+    public ProfileVo unFollow(@PathVariable("username") String username,@AuthenticationPrincipal LoginUser user) {
+        profileService.removeFollow(username,user);
+        return new ProfileVo(profileService.getProfileByUserName(username,user));
     }
 }
