@@ -2,6 +2,8 @@ package realworld.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -17,7 +19,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<Object> handleNotFound(ResourceNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                             .body(HttpCommon.NOT_FOUND);
+                             .body(HttpCommon.RESOURCE_NOT_FOUND);
     }
 
 
@@ -33,8 +35,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(customErrors);
     }
 
-    @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<Object> handleAuthenticationException(AuthenticationException e) {
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<Object> InvalidUsernameOrPassword(AuthenticationException e) {
         CustomErrors customErrors = new CustomErrors();
         Map<String, List<String>> map = customErrors.getErrors();
         ArrayList<String> list = new ArrayList<>();
@@ -43,20 +45,30 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(customErrors);
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Object> handleAccessDenied(AccessDeniedException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("test access");
+    }
 
-//    @ExceptionHandler({InvalidEmailOrPasswordException.class})
-//    public ResponseEntity<Object> handleInvalidEmailOrPassword(InvalidEmailOrPasswordException e) {
-//        CustomErrors customErrors = new CustomErrors();
-//        Map<String, List<String>> errors = customErrors.getErrors();
-//        ArrayList<String> list = new ArrayList<>();
-//        list.add(HttpCommon.IS_INVALID);
-//        errors.put(HttpCommon.EMAIL_PASSWORD_INVALID, list);
-//        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(customErrors);
-//    }
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<Object> handlerAuthenticationError(AuthenticationException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("test forbidden");
+    }
 
     @ExceptionHandler(UnAuthorizedException.class)
     public ResponseEntity<Object> handleUnAuthorize(UnAuthorizedException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(HttpCommon.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(EmailAlreadyExistException.class)
+    public ResponseEntity<Object> handleEmailExist(EmailAlreadyExistException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
+
+    @ExceptionHandler(UserNameAlreadyExistException.class)
+    public ResponseEntity<Object> handleUsernameExist(UserNameAlreadyExistException e){
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
+
 
 }

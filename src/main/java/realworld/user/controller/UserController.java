@@ -1,10 +1,6 @@
 package realworld.user.controller;
 
-import com.fasterxml.jackson.annotation.JsonRootName;
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,10 +9,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import realworld.user.LoginParam;
-import realworld.user.UserRegister;
-import realworld.user.service.UserService;
 import realworld.user.LoginUser;
 import realworld.user.User;
+import realworld.user.UserRegister;
+import realworld.user.service.UserService;
 import realworld.utils.TokenService;
 
 @RestController
@@ -58,6 +54,14 @@ public class UserController {
 
     @GetMapping("/user")
     public LoginUser getCurrentUser(@AuthenticationPrincipal LoginUser loginUser) {
+        return loginUser;
+    }
+
+    @PutMapping("/user")
+    public LoginUser updateUser(@RequestBody LoginUser param,
+                                @AuthenticationPrincipal LoginUser loginUser) {
+
+        userService.updateUser(param, loginUser);
         return loginUser;
     }
 }

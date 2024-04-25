@@ -45,8 +45,8 @@ public class MybatisUserRepository implements UserRepository {
         User user = userMapper.selectOne(queryWrapper);
         Optional.ofNullable(user).map(User::getId).ifPresent(id -> {
             boolean hasFollowed = userMapper.isAlreadyFollowed(id, userId);
-            if(!hasFollowed){
-                userMapper.addFollow(id,userId);
+            if (!hasFollowed) {
+                userMapper.addFollow(id, userId);
             }
         });
     }
@@ -54,6 +54,19 @@ public class MybatisUserRepository implements UserRepository {
     @Override
     @Transactional
     public void removeFollow(String username, Long userId) {
-        userMapper.removeFollow(username,userId);
+        userMapper.removeFollow(username, userId);
+    }
+
+    @Override
+    public Optional<User> findUserByUserName(String username) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("username", username);
+        User user = userMapper.selectOne(queryWrapper);
+        return Optional.ofNullable(user);
+    }
+
+    @Override
+    public void updateUser(User user) {
+        userMapper.updateById(user);
     }
 }

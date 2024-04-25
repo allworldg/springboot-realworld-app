@@ -1,9 +1,10 @@
 package realworld.exception;
 
-import static realworld.common.HttpCommon.NOT_FOUND;
+import static realworld.common.HttpCommon.RESOURCE_NOT_FOUND;
 
 public class ResourceNotFoundException extends RuntimeException {
-    public ResourceNotFoundException(){
-        super(NOT_FOUND);
+    public ResourceNotFoundException() {
+        super(RESOURCE_NOT_FOUND);
     }
+
 }

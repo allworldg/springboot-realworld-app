@@ -19,4 +19,8 @@ public interface UserRepository {
     void addFollow(String username, Long userId);
 
     void removeFollow(String username, Long userId);
+
+    Optional<User> findUserByUserName(String username);
+
+    void updateUser(User user);
 }

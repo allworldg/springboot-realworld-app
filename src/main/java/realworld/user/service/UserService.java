@@ -1,12 +1,16 @@
 package realworld.user.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import realworld.exception.EmailAlreadyExistException;
 import realworld.exception.InvalidEmailOrPasswordException;
 import realworld.exception.UnAuthorizedException;
-import realworld.user.UserRegister;
+import realworld.exception.UserNameAlreadyExistException;
+import realworld.user.LoginUser;
 import realworld.user.User;
+import realworld.user.UserRegister;
 import realworld.user.repository.UserRepository;
 
 @Service
@@ -43,4 +47,27 @@ public class UserService {
     }
 
 
+    public void updateUser(LoginUser param, LoginUser loginUser) {
+        User user = new User();
+        String email = param.getEmail();
+        if (!StringUtils.isBlank(email) && !StringUtils.equals(email, loginUser.getEmail())) {
+            userRepository.findUserByEmail(email).ifPresent(u -> {
+                throw new EmailAlreadyExistException();
+            });
+            user.setEmail(email);
+        }
+        String username = param.getUsername();
+        if (!StringUtils.isBlank(username) &&
+                !StringUtils.equals(username, loginUser.getUsername())) {
+            userRepository.findUserByUserName(username).ifPresent(u -> {
+                throw new UserNameAlreadyExistException();
+            });
+            user.setUsername(username);
+        }
+        user.setPassword(param.getPassword());
+        user.setImage(param.getImage());
+        user.setId(loginUser.getId());
+        user.setBio(param.getBio());
+        userRepository.updateUser(user);
+    }
 }
