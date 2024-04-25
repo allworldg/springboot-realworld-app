@@ -13,13 +13,15 @@
     </resultMap>
 
     <select id="getCommentDtosBySlug" resultMap="commentDto">
-        select id,
-               user_id    as userId,
-               body,
-               created_at,
-               updated_at,
+        select c.id,
+               c.user_id  as userId,
+               c.body,
+               c.created_at,
+               c.updated_at,
                #{loginId} as loginId
-        from comment
+        from comment as c
+                 inner join article as a on a.id = c.article_id
+        where a.slug = #{slug}
         order by created_at
     </select>
     <select id="getAuthor" resultType="realworld.user.Profile">
