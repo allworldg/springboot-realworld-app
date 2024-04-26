@@ -1,15 +1,12 @@
 package realworld.tag.repository;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import org.apache.ibatis.exceptions.PersistenceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import realworld.tag.Tag;
 
-import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,4 +40,12 @@ public class MyBatisTagRepository implements TagRepository {
             }
         }
     }
+
+    @Override
+    @Transactional
+    public void deleteTags(Long articleId) {
+        tagMapper.deleteTagArticleRelations(articleId);
+    }
+
+
 }

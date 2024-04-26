@@ -1,10 +1,8 @@
 package realworld.article;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import jakarta.validation.constraints.NotBlank;
-import realworld.article.annotation.UniqueTitle;
 
 import java.util.List;
 
@@ -72,6 +70,5 @@ public class ArticleParam {
     private String description;
     private List<String> tagList;
     @NotBlank
-    @UniqueTitle
     private String title;
 }

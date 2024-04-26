@@ -32,6 +32,7 @@ public class ArticleController {
     @PostMapping()
     public ArticleVo createArticle(@RequestBody @Valid ArticleParam articleParam,
                                    @AuthenticationPrincipal LoginUser user) {
+        articleService.checkTitleExist(null, articleParam.getTitle());
         ArticleDTO articleDTO = articleService.createArticle(articleParam, user);
         return new ArticleVo(articleDTO);
     }
@@ -59,10 +60,20 @@ public class ArticleController {
         return new ArticleVo(articleService.addFavorite(slug, user));
     }
 
+    @PutMapping("/{slug}")
+    public ArticleVo updateArticle(@PathVariable String slug,
+                                   @RequestBody @Valid ArticleParam param,
+                                   @AuthenticationPrincipal LoginUser user) {
+        ArticleDTO articleDto = articleService.getArticleDtoBySlug(slug, null);
+        articleService.checkTitleExist(articleDto.getTitle(),param.getTitle());
+        String newSlug = articleService.updateArticle(slug, param, user);
+        return new ArticleVo(articleService.getArticleDtoBySlug(newSlug, user));
+    }
+
     @DeleteMapping("/{slug}/favorite")
     public ArticleVo deleteFavorite(@PathVariable String slug,
                                     @AuthenticationPrincipal LoginUser user) {
-        return new ArticleVo(articleService.deleteFavorite(slug,user));
+        return new ArticleVo(articleService.deleteFavorite(slug, user));
     }
 
 }

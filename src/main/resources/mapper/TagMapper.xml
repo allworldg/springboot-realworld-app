@@ -6,5 +6,10 @@
         insert into tag_article (tag_id, article_id)
         values (#{tagId}, #{articleId})
     </insert>
+    <delete id="deleteTagArticleRelations">
+        delete
+        from tag_article
+        where article_id = #{articleId}
+    </delete>
 </mapper>
 

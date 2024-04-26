@@ -7,4 +7,6 @@ public interface TagRepository {
     List<String> getTagList();
 
     void createTag(List<String> tagList, Long id);
+
+    void deleteTags(Long articleId);
 }

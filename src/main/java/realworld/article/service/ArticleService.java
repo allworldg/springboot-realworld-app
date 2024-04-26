@@ -1,14 +1,19 @@
 package realworld.article.service;
 
+import com.github.slugify.Slugify;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import realworld.article.*;
 import realworld.article.repository.ArticleRepository;
+import realworld.exception.NoAuthenticationException;
 import realworld.exception.ResourceNotFoundException;
+import realworld.exception.TitleAlreadyExistException;
 import realworld.tag.repository.TagRepository;
 import realworld.user.LoginUser;
 import realworld.user.Profile;
 
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -73,6 +78,35 @@ public class ArticleService {
                                               .orElseThrow(ResourceNotFoundException::new);
         Long articleId = article.getId();
         articleRepository.deleteFavorite(articleId, user.getId());
-        return articleRepository.getArticleDtoBySlug(slug, userId).orElseThrow(ResourceNotFoundException::new);
+        return articleRepository.getArticleDtoBySlug(slug, userId)
+                                .orElseThrow(ResourceNotFoundException::new);
+    }
+
+    public String updateArticle(String slug, ArticleParam param, LoginUser user) {
+        Long userId = user.getId();
+        ArticleDTO articleDTO = articleRepository.getArticleDtoBySlug(slug, userId)
+                                                 .orElseThrow(ResourceNotFoundException::new);
+        if (!articleDTO.getAuthor().getId().equals(userId)) {
+            throw new NoAuthenticationException();
+        }
+        Slugify slugify = Slugify.builder().build();
+        String newSlug = slugify.slugify(param.getTitle());
+        Article article =
+                new Article(articleDTO.getId(), param.getTitle(), newSlug,
+                        param.getDescription(), param.getBody(), articleDTO.getCreatedAt(),
+                        new Date(), userId);
+        articleRepository.updateArticle(article);
+        tagRepository.deleteTags(article.getId());
+        tagRepository.createTag(param.getTagList(), article.getId());
+        return newSlug;
+    }
+
+    public void checkTitleExist(String oldTitle, String title) {
+        if (StringUtils.isEmpty(oldTitle) || StringUtils.equals(oldTitle, title)) {
+            return;
+        }
+        articleRepository.getArticleByTitle(title).ifPresent(e -> {
+            throw new TitleAlreadyExistException();
+        });
     }
 }

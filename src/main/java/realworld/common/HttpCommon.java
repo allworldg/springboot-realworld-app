@@ -8,4 +8,5 @@ public class HttpCommon {
     public static final String LIMIT_MIN_ZERO = "should be greater than 0";
     public static final String EMAIL_ALREADY_EXISTED = "Email is already existed";
     public static final String USERNAME_ALREADY_EXISTED = "Username is already existed";
+    public static final String ALREADY_EXISTED = "is already existed";
 }

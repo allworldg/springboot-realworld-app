@@ -93,11 +93,16 @@ public class MyBatisArticleRepository implements ArticleRepository {
 
     @Override
     public boolean isAlreadyFavorited(Long articleId, Long userId) {
-        return articleMapper.isAlreadyFavorited(articleId,userId);
+        return articleMapper.isAlreadyFavorited(articleId, userId);
     }
 
     @Override
     public void deleteFavorite(Long articleId, Long userId) {
-        articleMapper.deleteFavorited(articleId,userId);
+        articleMapper.deleteFavorited(articleId, userId);
+    }
+
+    @Override
+    public void updateArticle(Article article) {
+        articleMapper.updateById(article);
     }
 }

@@ -35,6 +35,16 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(customErrors);
     }
 
+    @ExceptionHandler(TitleAlreadyExistException.class)
+    public ResponseEntity<Object> handleTitleAlreadyExist(TitleAlreadyExistException e){
+        CustomErrors customErrors = new CustomErrors();
+        Map<String,List<String>> errors = customErrors.getErrors();
+        List<String> list = new ArrayList<>();
+        list.add(e.getMessage());
+        errors.put("title",list);
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(customErrors);
+    }
+
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Object> InvalidUsernameOrPassword(AuthenticationException e) {
         CustomErrors customErrors = new CustomErrors();
