@@ -102,7 +102,7 @@ public class ArticleService {
     }
 
     public void checkTitleExist(String oldTitle, String title) {
-        if (StringUtils.isEmpty(oldTitle) || StringUtils.equals(oldTitle, title)) {
+        if (StringUtils.equals(oldTitle, title)) {
             return;
         }
         articleRepository.getArticleByTitle(title).ifPresent(e -> {

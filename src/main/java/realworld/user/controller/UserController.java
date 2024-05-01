@@ -62,6 +62,7 @@ public class UserController {
                                 @AuthenticationPrincipal LoginUser loginUser) {
 
         userService.updateUser(param, loginUser);
+
         return loginUser;
     }
 }

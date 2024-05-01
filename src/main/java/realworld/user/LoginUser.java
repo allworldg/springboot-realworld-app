@@ -1,10 +1,8 @@
 package realworld.user;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -22,7 +20,6 @@ public class LoginUser implements UserDetails {
     private String username;
     private String bio;
     private String image;
-    @JsonIgnore
     private String password;
 
 
@@ -51,6 +48,15 @@ public class LoginUser implements UserDetails {
         this.image = user.getImage();
     }
 
+    public void setByUser(User user) {
+        this.id = user.getId();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.username = user.getUsername();
+        this.bio = user.getBio();
+        this.image = user.getImage();
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -63,6 +69,7 @@ public class LoginUser implements UserDetails {
         return email;
     }
 
+    @JsonIgnore
     public void setEmail(String email) {
         this.email = email;
     }

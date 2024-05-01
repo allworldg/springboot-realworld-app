@@ -64,10 +64,16 @@ public class UserService {
             });
             user.setUsername(username);
         }
-        user.setPassword(param.getPassword());
+        if (StringUtils.isBlank(param.getPassword())) {
+            user.setPassword(null);
+        } else {
+            user.setPassword(param.getPassword());
+        }
         user.setImage(param.getImage());
         user.setId(loginUser.getId());
         user.setBio(param.getBio());
         userRepository.updateUser(user);
+        loginUser.setByUser(user);
+
     }
 }

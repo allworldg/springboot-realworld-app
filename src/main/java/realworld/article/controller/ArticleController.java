@@ -54,6 +54,7 @@ public class ArticleController {
         return new ArticleVo(articleDTO);
     }
 
+
     @PostMapping("/{slug}/favorite")
     public ArticleVo addfavorite(@PathVariable String slug,
                                  @AuthenticationPrincipal LoginUser user) {
@@ -65,7 +66,7 @@ public class ArticleController {
                                    @RequestBody @Valid ArticleParam param,
                                    @AuthenticationPrincipal LoginUser user) {
         ArticleDTO articleDto = articleService.getArticleDtoBySlug(slug, null);
-        articleService.checkTitleExist(articleDto.getTitle(),param.getTitle());
+        articleService.checkTitleExist(articleDto.getTitle(), param.getTitle());
         String newSlug = articleService.updateArticle(slug, param, user);
         return new ArticleVo(articleService.getArticleDtoBySlug(newSlug, user));
     }
