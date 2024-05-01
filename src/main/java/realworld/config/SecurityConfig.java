@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -15,6 +16,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -25,7 +27,7 @@ import realworld.user.service.LoginUserService;
 import java.util.Arrays;
 import java.util.List;
 
-@EnableMethodSecurity
+@EnableMethodSecurity()
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -46,16 +48,15 @@ public class SecurityConfig {
                    .authorizeHttpRequests(request -> request
                            .requestMatchers("/users/login", "/users", "/tags", "/profiles/*")
                            .permitAll()
-                           .requestMatchers(HttpMethod.GET, "/articles", "/articles/**").permitAll()
                            .requestMatchers("/articles/feed").authenticated()
+                           .requestMatchers(HttpMethod.GET, "/articles", "/articles/**").permitAll()
                            .requestMatchers("/error").permitAll()
                            .anyRequest()
                            .authenticated()
                    )
-//                   .exceptionHandling(exp ->
-//                           exp.authenticationEntryPoint(getMyAuthEntryPoint())
-//                              .accessDeniedHandler(getMyAccessDeniedHandler()))
-
+                   .exceptionHandling(exp ->
+                           exp.authenticationEntryPoint(
+                                   new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)))
                    .build();
     }
 
@@ -65,16 +66,6 @@ public class SecurityConfig {
         provider.setPasswordEncoder(passwordEncoder());
         provider.setUserDetailsService(userService);
         return new ProviderManager(provider);
-    }
-
-    @Bean
-    public MyAuthenticationEntryPoint getMyAuthEntryPoint() {
-        return new MyAuthenticationEntryPoint();
-    }
-
-    @Bean
-    public MyAccessDeniedHandler getMyAccessDeniedHandler() {
-        return new MyAccessDeniedHandler();
     }
 
     @Bean

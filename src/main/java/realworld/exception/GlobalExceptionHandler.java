@@ -36,12 +36,12 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(TitleAlreadyExistException.class)
-    public ResponseEntity<Object> handleTitleAlreadyExist(TitleAlreadyExistException e){
+    public ResponseEntity<Object> handleTitleAlreadyExist(TitleAlreadyExistException e) {
         CustomErrors customErrors = new CustomErrors();
-        Map<String,List<String>> errors = customErrors.getErrors();
+        Map<String, List<String>> errors = customErrors.getErrors();
         List<String> list = new ArrayList<>();
         list.add(e.getMessage());
-        errors.put("title",list);
+        errors.put("title", list);
         return ResponseEntity.status(HttpStatus.CONFLICT).body(customErrors);
     }
 
@@ -57,17 +57,17 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Object> handleAccessDenied(AccessDeniedException e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("test access");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(HttpCommon.UNAUTHORIZED);
     }
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<Object> handlerAuthenticationError(AuthenticationException e) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("test forbidden");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("");
     }
 
     @ExceptionHandler(UnAuthorizedException.class)
     public ResponseEntity<Object> handleUnAuthorize(UnAuthorizedException e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(HttpCommon.UNAUTHORIZED);
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(HttpCommon.UNAUTHORIZED);
     }
 
     @ExceptionHandler(EmailAlreadyExistException.class)
@@ -76,7 +76,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UserNameAlreadyExistException.class)
-    public ResponseEntity<Object> handleUsernameExist(UserNameAlreadyExistException e){
+    public ResponseEntity<Object> handleUsernameExist(UserNameAlreadyExistException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 
