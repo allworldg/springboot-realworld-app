@@ -16,7 +16,7 @@ import realworld.user.repository.UserRepository;
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
 
     @Value("${image_url}")
@@ -38,12 +38,12 @@ public class UserService {
 
     public User findUserByUserId(Long id) {
         return userRepository.findUserByUserId(id)
-                             .orElseThrow(() -> new UnAuthorizedException());
+                             .orElseThrow(UnAuthorizedException::new);
     }
 
     public User findUserByEmail(String email) {
         return userRepository.findUserByEmail(email)
-                             .orElseThrow(() -> new InvalidEmailOrPasswordException());
+                             .orElseThrow(InvalidEmailOrPasswordException::new);
     }
 
 
@@ -73,7 +73,6 @@ public class UserService {
         user.setId(loginUser.getId());
         user.setBio(param.getBio());
         userRepository.updateUser(user);
-        loginUser.setByUser(user);
 
     }
 }

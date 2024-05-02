@@ -1,20 +1,16 @@
 package realworld.filters;
 
 
-import jakarta.servlet.*;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
-import org.springframework.web.filter.GenericFilterBean;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.servlet.function.ServerRequest;
 import realworld.user.LoginUser;
-import realworld.user.User;
 import realworld.user.service.UserService;
 import realworld.utils.TokenService;
 
@@ -38,15 +34,11 @@ public class TokenFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
         String authorization = StringUtils.substring(request.getHeader("Authorization"), 6);
         Optional.ofNullable(authorization).map(auth ->
-                        {
-                            Long idByToken = tokenService.getIdByToken(auth);
-                            return idByToken;
-                        }
+                        tokenService.getIdByToken(auth)
                 )
                 .map(userId -> {
                     tokenService.updateExpiredTime(authorization);
-                    User userByUserId = userService.findUserByUserId(userId);
-                    return userByUserId;
+                    return userService.findUserByUserId(userId);
                 })
                 .ifPresent(user -> {
                     LoginUser loginUser = new LoginUser(user);

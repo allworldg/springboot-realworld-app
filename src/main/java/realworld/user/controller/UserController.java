@@ -17,11 +17,11 @@ import realworld.utils.TokenService;
 
 @RestController
 public class UserController {
-    private UserService userService;
+    private final UserService userService;
 
-    private AuthenticationManager manager;
+    private final AuthenticationManager manager;
 
-    private TokenService tokenService;
+    private final TokenService tokenService;
 
     public UserController(UserService userService, AuthenticationManager manager,
                           TokenService tokenService) {
@@ -37,13 +37,11 @@ public class UserController {
                         loginParam.getPassword());
 
         Authentication authenticate = manager.authenticate(token);
-        LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
-        return loginUser;
+        return (LoginUser) authenticate.getPrincipal();
     }
 
     @PostMapping("/users")
-    public ResponseEntity<LoginUser> register(@Valid @RequestBody UserRegister userRegister)
-            throws Exception {
+    public ResponseEntity<LoginUser> register(@Valid @RequestBody UserRegister userRegister) {
         User user = userService.addUser(userRegister);
         user = userService.findUserByUserId(user.getId());
         LoginUser loginUser = new LoginUser(user.getId(), user.getEmail(), "", user.getUsername(),
@@ -62,7 +60,8 @@ public class UserController {
                                 @AuthenticationPrincipal LoginUser loginUser) {
 
         userService.updateUser(param, loginUser);
-
+        User user = userService.findUserByUserId(loginUser.getId());
+        loginUser.setByUser(user);
         return loginUser;
     }
 }
